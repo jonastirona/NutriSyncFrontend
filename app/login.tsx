@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,31 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import styles from '../styles';
+import { loginUser } from '../services/api';
 
 export default function Login() {
   const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const data = await loginUser(username, password);
+      console.log('Login response:', data);
+      Alert.alert('Success', 'Logged in successfully!');
+      router.push('/home');
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Error', error.message);
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -27,19 +46,22 @@ export default function Login() {
 
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder="Username"
             placeholderTextColor="#A390E4"
-            keyboardType="email-address"
+            value={username}
+            onChangeText={setUsername}
           />
           <TextInput
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#A390E4"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>

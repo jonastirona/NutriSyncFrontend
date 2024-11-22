@@ -3,8 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#1A1A2E',
     padding: 20,
   },
@@ -57,6 +55,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     textDecorationLine: 'underline',
+  },
+  navbar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#1A1A2E',
+    borderTopWidth: 1,
+    borderTopColor: '#A390E4',
+    paddingHorizontal: 10,
+  },
+  navButton: {
+    alignItems: 'center',
+  },
+  navButtonText: {
+    fontSize: 16,
+    color: '#A390E4',
   },
 });
 
