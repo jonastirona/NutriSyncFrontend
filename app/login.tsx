@@ -44,21 +44,23 @@ export default function Login() {
           <Text style={styles.title}>Log In</Text>
           <Text style={styles.subtitle}>Welcome back!</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            placeholderTextColor="#A390E4"
-            value={username}
-            onChangeText={setUsername}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#A390E4"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Username"
+              placeholderTextColor="#A390E4"
+              value={username}
+              onChangeText={setUsername}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              placeholderTextColor="#A390E4"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleLogin}>

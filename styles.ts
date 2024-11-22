@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: '#D4A5FF',
-    marginTop: 100,
+    marginTop: 200,
     textAlign: 'center',
   },
   subtitle: {
@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     color: '#A390E4',
     textAlign: 'center',
     marginVertical: 20,
+  },
+  inputContainer: {
+    alignItems: 'center',
   },
   input: {
     width: '90%',
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: 30,
-    marginBottom: 100,
+    marginBottom: 90,
   },
   button: {
     backgroundColor: '#A390E4',
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#A390E4',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 0,
     textDecorationLine: 'underline',
   },
   navbar: {

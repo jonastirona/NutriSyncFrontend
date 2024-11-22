@@ -8,6 +8,7 @@ export const BottomNavigation = () => {
 
   return (
     <View style={styles.container}>
+      {/* Your main content goes here */}
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => router.push('/home')} style={styles.navButton}>
           <Text style={styles.navButtonText}>Home</Text>
