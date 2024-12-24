@@ -1,23 +1,34 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../styles';
 
 export const BottomNavigation = () => {
-  const router = useRouter();
+  const navigation = useNavigation();
+
+  type ScreenNames = 'home' | 'search' | 'scanner' | 'login';
+
+  const Navigate = (screen: ScreenNames) => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: screen as never }],
+    });
+  };
 
   return (
     <View style={styles.container}>
-      {/* Your main content goes here */}
       <View style={styles.navbar}>
-        <TouchableOpacity onPress={() => router.push('/home')} style={styles.navButton}>
+        <TouchableOpacity onPress={() => Navigate('home')} style={styles.navButton}>
           <Text style={styles.navButtonText}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/search')} style={styles.navButton}>
+        <TouchableOpacity onPress={() => Navigate('search')} style={styles.navButton}>
           <Text style={styles.navButtonText}>Search</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/scanner')} style={styles.navButton}>
+        <TouchableOpacity onPress={() => Navigate('scanner')} style={styles.navButton}>
           <Text style={styles.navButtonText}>Scanner</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Navigate('login')} style={styles.navButton}>
+          <Text style={styles.navButtonText}>Log Out</Text>
         </TouchableOpacity>
       </View>
     </View>

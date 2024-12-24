@@ -10,12 +10,12 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../styles';
 import { loginUser } from '../services/api';
 
 export default function Login() {
-  const router = useRouter();
+  const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,7 +24,10 @@ export default function Login() {
       const data = await loginUser(username, password);
       console.log('Login response:', data);
       Alert.alert('Success', 'Logged in successfully!');
-      router.push('/home');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'home' as never }],
+      });
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert('Error', error.message);
@@ -68,7 +71,7 @@ export default function Login() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity onPress={() => router.push('/signup')}>
+          <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'signup' as never }] })}>
             <Text style={styles.linkText}>Don’t have an account? Sign Up</Text>
           </TouchableOpacity>
         </View>

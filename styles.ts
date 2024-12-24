@@ -80,6 +80,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#A390E4',
   },
+  circleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
 });
 
 export default styles;
