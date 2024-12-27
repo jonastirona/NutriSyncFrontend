@@ -1,158 +1,148 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Button, AppState } from 'react-native';
-import {
-  Camera,
-  useCameraDevices,
-  useFrameProcessor,
-} from 'react-native-vision-camera';
-import { scanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import styles from '../styles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
-import styles from '../styles';
-import 'react-native-reanimated';
-import { runOnJS } from 'react-native-reanimated';
+import PercentageBar from '../components/percentageBar';
+import { useCodeScanner } from 'react-native-vision-camera';
 
-interface FoodNutrient {
-  nutrientName: string;
-  value: number;
-}
+const Scanner = () => {
+    const devices = useCameraDevices();
+    const device = devices.find(device => device.position === 'back');
+    const [barcode, setBarcode] = useState<string | null>(null);
+    const [foodData, setFoodData] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
 
-interface FoodInfo {
-  description: string;
-  foodNutrients: FoodNutrient[];
-}
-
-export default function Scanner() {
-  const [hasPermission, setHasPermission] = useState(false);
-  const [scanned, setScanned] = useState(false);
-  const [foodInfo, setFoodInfo] = useState<FoodInfo | null>(null);
-  const cameraRef = useRef<Camera>(null);
-  const devices = useCameraDevices();
-  const device = devices?.find(device => device.position === 'back');
-
-  const frameProcessor = useFrameProcessor(frame => {
-    'worklet';
-    if (scanned) return;
-    const detectedBarcodes = scanBarcodes(frame, [
-      BarcodeFormat.EAN_13,
-      BarcodeFormat.UPC_A,
-      BarcodeFormat.UPC_E,
-    ]);
-
-    if (detectedBarcodes.length > 0) {
-      const barcodeData = detectedBarcodes[0].displayValue;
-      if (barcodeData) {
-        console.log('Scanned barcode:', barcodeData);
-        setScanned(true);
-        runOnJS(handleBarCodeScanned)({
-          type: 'barcode',
-          data: barcodeData,
-        });
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const status = await Camera.requestCameraPermission();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (nextAppState === 'active') {
-        setScanned(false);
-      }
+    const onCodeScanned = (codes: any) => {
+        if (codes && codes.length > 0) {
+            setBarcode(codes[0].value);
+        }
+    };
+    const codeScanner = useCodeScanner({
+        codeTypes: ['ean-13', 'qr'],
+        onCodeScanned: onCodeScanned,
     });
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+    useEffect(() => {
+        if (barcode) {
+            setLoading(true);
+            const fetchFoodData = async () => {
+                try {
+                    const response = await fetch(
+                        `http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/barcode?barcode=${barcode}`,
+                    );
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data);
+                        if (data.status === 1) {
+                            const nutrients = data.product.nutriments;
+                            const calories = nutrients['energy-kcal_100g'] || 0;
+                            const protein = nutrients['proteins_100g'] || 0;
+                            const fat = nutrients['fat_100g'] || 0;
+                            const carbs = nutrients['carbohydrates_100g'] || 0;
+                            setFoodData({ calories, protein, fat, carbs });
+                        } else {
+                            setFoodData({ error: 'Could not find nutritional information for this product.' });
+                        }
+                    } else {
+                        console.error('Failed to fetch food data:', response.status);
+                        setFoodData({ error: 'Failed to fetch food data. Please try again later.' });
+                    }
+                } catch (error) {
+                    console.error('Error fetching food data:', error);
+                    setFoodData({ error: 'Failed to fetch food data. Please check your network connection.' });
+                } finally {
+                    setLoading(false);
+                }
+            };
 
-  const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
-    try {
-      const response = await fetch(`http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/barcode?barcode=${data}`);
-      const foodData: FoodInfo = await response.json();
-      setFoodInfo(foodData);
-    } catch (error) {
-      console.error('Error fetching food data:', error);
+            fetchFoodData();
+        }
+    }, [barcode]);
+
+
+    if (!device) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.title}>No camera found. </Text>
+            </View>
+        );
     }
-  };
 
-  if (device == null) return <Text>No camera available</Text>;
+    return (
+        <View style={styles.container}>
+            {device && (
+                <Camera
+                    style={StyleSheet.absoluteFill}
+                    device={device}
+                    isActive={true}
+                    codeScanner={codeScanner}
+                />
+            )}
 
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                {loading && <ActivityIndicator size="large" color={styles.title.color} />}
+                {foodData && foodData.error && <Text style={styles.subtitle}>{foodData.error}</Text>}
+                {foodData && !foodData.error && (
+                    <View style={styles.circleContainer}>
+                        <View style={localStyles.circleValueContainer}>
+                             <PercentageBar
+                                 label="Calories"
+                                 percentage={foodData.calories ? parseFloat(foodData.calories.toFixed(1)) : 0}
+                                 value = {foodData.calories}
+                             />
+                        </View>
+                        <View style={localStyles.circleValueContainer}>
+                            <PercentageCircle
+                                label="Fat"
+                                percentage={foodData.fat ? parseFloat(foodData.fat.toFixed(1)) : 0}
+                                value = {foodData.fat}
+                                circleStyle = {localStyles.smallerCircle}
+                                textStyle = {localStyles.smallerCircleText}
+                            />
+                        </View>
+                         <View style={localStyles.circleValueContainer}>
+                            <PercentageCircle
+                                label="Protein"
+                                percentage={foodData.protein ? parseFloat(foodData.protein.toFixed(1)) : 0}
+                                value = {foodData.protein}
+                                circleStyle = {localStyles.smallerCircle}
+                                textStyle = {localStyles.smallerCircleText}
+                            />
+                         </View>
+                        <View style={localStyles.circleValueContainer}>
+                            <PercentageCircle
+                                label="Carbs"
+                                percentage={foodData.carbs ? parseFloat(foodData.carbs.toFixed(1)) : 0}
+                                value = {foodData.carbs}
+                                circleStyle = {localStyles.smallerCircle}
+                                textStyle = {localStyles.smallerCircleText}
+                            />
+                        </View>
+                    </View>
+                )}
+            </View>
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Barcode Scanner</Text>
-      <Text style={styles.subtitle}>Scan barcodes for food details.</Text>
-      <View style={localStyles.scannerContainer}>
-        <Camera
-          ref={cameraRef}
-          style={StyleSheet.absoluteFill}
-          device={device}
-          isActive={true}
-          frameProcessor={frameProcessor}
-        />
-        {scanned && (
-          <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
-        )}
-      </View>
-      {foodInfo && (
-        <View style={localStyles.foodInfoContainer}>
-          <Text style={localStyles.foodTitle}>{foodInfo.description}</Text>
-          <View style={localStyles.percentageContainer}>
-            <PercentageCircle
-              label="Fat"
-              percentage={foodInfo.foodNutrients.find(n => n.nutrientName === 'Total lipid (fat)')?.value || 0}
-            />
-            <PercentageCircle
-              label="Carbs"
-              percentage={foodInfo.foodNutrients.find(n => n.nutrientName === 'Carbohydrate, by difference')?.value || 0}
-            />
-            <PercentageCircle
-              label="Protein"
-              percentage={foodInfo.foodNutrients.find(n => n.nutrientName === 'Protein')?.value || 0}
-            />
-          </View>
+            <BottomNavigation />
         </View>
-      )}
-      <BottomNavigation />
-    </View>
-  );
-}
+    );
+};
 
 const localStyles = StyleSheet.create({
-  scannerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 20,
-    width: '80%',
-    height: '50%',
-  },
-  camera: {
-    flex: 1,
-    width: '100%',
-  },
-  foodInfoContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  foodTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: styles.title.color,
-    marginBottom: 10,
-  },
-  percentageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-  },
+    circleValueContainer:{
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+      smallerCircle:{
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        borderWidth: 5,
+    },
+    smallerCircleText:{
+        fontSize: 16,
+    },
 });
+
+export default Scanner;
