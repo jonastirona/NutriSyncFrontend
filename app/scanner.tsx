@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import styles from '../styles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
-import { useCodeScanner } from 'react-native-vision-camera';
 
 const Scanner = () => {
-    const devices = useCameraDevices();
-    const device = devices.find(device => device.position === 'back');
     const [barcode, setBarcode] = useState<string | null>(null);
     const [foodData, setFoodData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const onCodeScanned = (codes: any) => {
-        if (codes && codes.length > 0) {
-            setBarcode(codes[0].value);
-        }
+    const onCodeScanned = (e: any) => {
+        setBarcode(e.data);
     };
-    const codeScanner = useCodeScanner({
-        codeTypes: ['ean-13', 'qr'],
-        onCodeScanned: onCodeScanned,
-    });
 
     useEffect(() => {
         if (barcode) {
@@ -61,25 +52,13 @@ const Scanner = () => {
         }
     }, [barcode]);
 
-
-    if (!device) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.title}>No camera found. </Text>
-            </View>
-        );
-    }
-
     return (
         <View style={styles.container}>
-            {device && (
-                <Camera
-                    style={StyleSheet.absoluteFill}
-                    device={device}
-                    isActive={true}
-                    codeScanner={codeScanner}
-                />
-            )}
+            <QRCodeScanner
+                onRead={onCodeScanned}
+                topContent={<Text style={styles.title}>Scan a barcode</Text>}
+                bottomContent={<Text style={styles.subtitle}>Align the barcode within the frame</Text>}
+            />
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {loading && <ActivityIndicator size="large" color={styles.title.color} />}
