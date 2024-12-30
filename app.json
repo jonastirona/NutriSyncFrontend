@@ -29,13 +29,6 @@
       },
       "package": "com.anonymous.NutriSync"
     },
-    "plugins": [
-      [
-        "react-native-reanimated",
-        {
-          "enabled": true
-        }
-      ]
-    ]
+    "plugins": []
   }
 }
