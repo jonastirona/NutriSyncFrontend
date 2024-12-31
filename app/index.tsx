@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import styles from '../styles';
 
 export default function MainScreen() {
   const router = useRouter();
+
+  useEffect(() => {
+    console.log('MainScreen component loaded');
+  }, []);
 
   return (
     <View style={styles.container}>

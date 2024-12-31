@@ -14,8 +14,10 @@ export const loginUser = async (username, password) => {
         }
       }
     );
+    console.log('Login response:', response.data);
     return response.data;
   } catch (error) {
+    console.error('Login error:', error.response?.data || error.message);
     throw new Error(error.response?.data?.message || 'Login failed');
   }
 };
@@ -33,8 +35,10 @@ export const signupUser = async (email, username, password) => {
         }
       }
     );
+    console.log('Signup response:', response.data);
     return response.data;
   } catch (error) {
+    console.error('Signup error:', error.response?.data || error.message);
     throw new Error(error.response?.data?.message || 'Signup failed');
   }
 };
