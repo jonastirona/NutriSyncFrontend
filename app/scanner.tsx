@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
 import styles from '../styles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
@@ -11,8 +11,8 @@ const Scanner = () => {
     const [foodData, setFoodData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const onCodeScanned = (e: any) => {
-        setBarcode(e.data);
+    const onCodeScanned = ({ data }: { data: string }) => {
+        setBarcode(data);
     };
 
     useEffect(() => {
@@ -54,11 +54,18 @@ const Scanner = () => {
 
     return (
         <View style={styles.container}>
-            <QRCodeScanner
-                onRead={onCodeScanned}
-                topContent={<Text style={styles.title}>Scan a barcode</Text>}
-                bottomContent={<Text style={styles.subtitle}>Align the barcode within the frame</Text>}
-            />
+            <RNCamera
+                style={styles.camera}
+                onBarCodeRead={onCodeScanned}
+                captureAudio={false}
+            >
+                <View style={styles.topContent}>
+                    <Text style={styles.title}>Scan a barcode</Text>
+                </View>
+                <View style={styles.bottomContent}>
+                    <Text style={styles.subtitle}>Align the barcode within the frame</Text>
+                </View>
+            </RNCamera>
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {loading && <ActivityIndicator size="large" color={styles.title.color} />}
