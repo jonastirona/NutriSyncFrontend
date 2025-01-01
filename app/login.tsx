@@ -14,11 +14,14 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 import { loginUser } from '../services/api';
 
+// Login component
 export default function Login() {
+  // useNavigation hook to access navigation object
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // function to handle login
   const handleLogin = async () => {
     try {
       const data = await loginUser(username, password);
@@ -37,13 +40,17 @@ export default function Login() {
     }
   };
 
+  // Login component
   return (
+    // KeyboardAvoidingView to handle keyboard behavior
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
+      {/* TouchableWithoutFeedback to dismiss keyboard */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+          {/* Login form */}
           <Text style={styles.title}>Log In</Text>
           <Text style={styles.subtitle}>Welcome back!</Text>
 
@@ -70,7 +77,8 @@ export default function Login() {
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
-
+            
+          {/* Sign Up link */}
           <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'signup' as never }] })}>
             <Text style={styles.linkText}>Don’t have an account? Sign Up</Text>
           </TouchableOpacity>
