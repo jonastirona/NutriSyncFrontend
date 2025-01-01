@@ -8,15 +8,19 @@ import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
 import { fetchFoodDataByBarcode } from '../services/api';
 
+// Scanner component
 const Scanner = () => {
+    // state variables
     const [barcode, setBarcode] = useState<string | null>(null);
     const [foodData, setFoodData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
+    // function to handle barcode scan
     const onCodeScanned = ({ data }: { data: string }) => {
         setBarcode(data);
     };
 
+    // fetch food data when barcode changes
     useEffect(() => {
         if (barcode) {
             setLoading(true);
@@ -46,13 +50,16 @@ const Scanner = () => {
         }
     }, [barcode]);
 
+    // render the Scanner component
     return (
         <View style={styles.container}>
+            {/* RNCamera component for barcode scanning */}
             <RNCamera
                 style={scannerStyles.camera}
                 onBarCodeRead={onCodeScanned}
                 captureAudio={false}
             >
+                {/* Scanner content */}
                 <View style={scannerStyles.topContent}>
                     <Text style={styles.title}>Scan a barcode</Text>
                 </View>
@@ -60,7 +67,7 @@ const Scanner = () => {
                     <Text style={styles.subtitle}>Align the barcode within the frame</Text>
                 </View>
             </RNCamera>
-
+            {/* Food data display */}
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {loading && <ActivityIndicator size="large" color={styles.title.color} />}
                 {foodData && foodData.error && <Text style={styles.subtitle}>{foodData.error}</Text>}

@@ -14,18 +14,22 @@ import styles from '../styles/styles';
 import searchStyles from '../styles/searchStyles';
 import { searchFood, loadMoreResults } from '../services/api';
 
+// interface for food nutrient
 interface FoodNutrient {
     nutrientName: string;
     value: number;
 }
 
+// interface for food item
 interface FoodItem {
     fdcId: number;
     description: string;
     foodNutrients: FoodNutrient[];
 }
 
+// SearchScreen component
 const SearchScreen = () => {
+    // state variables
     const [keyword, setKeyword] = useState('');
     const [searchResults, setSearchResults] = useState<FoodItem[]>([]);
     const [expandedItem, setExpandedItem] = useState<number | null>(null);
@@ -35,6 +39,7 @@ const SearchScreen = () => {
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 10;
 
+    // function to reset states
     const resetStates = () => {
         setSearchResults([]);
         setExpandedItem(null);
@@ -42,6 +47,7 @@ const SearchScreen = () => {
         setHasMore(true);
     };
 
+    // function to handle search food
     const handleSearchFood = async () => {
         setLoading(true);
         setError('');
@@ -64,6 +70,7 @@ const SearchScreen = () => {
         }
     };
 
+    // function to handle load more results
     const handleLoadMoreResults = async () => {
         if (!keyword || loading || !hasMore) return;
         setLoading(true);
@@ -87,10 +94,12 @@ const SearchScreen = () => {
         }
     };
 
+    // function to toggle expand item
     const toggleExpand = (index: number) => {
         setExpandedItem(expandedItem === index ? null : index);
     };
 
+    // function to render item
     const renderItem = ({ item, index }: { item: FoodItem; index: number }) => (
         <View style={searchStyles.itemContainer}>
             <TouchableOpacity onPress={() => toggleExpand(index)}>
@@ -153,8 +162,10 @@ const SearchScreen = () => {
         </View>
     );
 
+    // render component
     return (
         <View style={styles.container}>
+            {/* Search input */}
             <View style={searchStyles.searchContainer}>
                 <TextInput
                     style={searchStyles.input}
@@ -167,6 +178,7 @@ const SearchScreen = () => {
                     <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
+            {/* Search results */}
             {error ? <Text style={styles.subtitle}>{error}</Text> : null}
             {loading && <ActivityIndicator size="large" color={styles.title.color} />}
             <FlatList

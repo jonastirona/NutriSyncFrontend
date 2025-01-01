@@ -12,13 +12,16 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 import { signupUser } from '../services/api';
 
+// Signup component
 export default function Signup() {
+  // state variables
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // function to handle signup
   const handleSignup = async () => {
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match');
@@ -37,8 +40,10 @@ export default function Signup() {
     }
   };
 
+  // render the Signup component
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      {/* Signup form */}
       <View style={styles.container}>
         <Text style={styles.title}>Sign Up</Text>
         <View style={styles.inputContainer}>
