@@ -6,6 +6,7 @@ import scannerStyles from '../styles/scannerStyles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
+import { fetchFoodDataByBarcode } from '../services/api';
 
 const Scanner = () => {
     const [barcode, setBarcode] = useState<string | null>(null);
@@ -21,25 +22,17 @@ const Scanner = () => {
             setLoading(true);
             const fetchFoodData = async () => {
                 try {
-                    const response = await fetch(
-                        `http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/barcode?barcode=${barcode}`,
-                    );
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log(data);
-                        if (data.status === 1) {
-                            const nutrients = data.product.nutriments;
-                            const calories = nutrients['energy-kcal_100g'] || 0;
-                            const protein = nutrients['proteins_100g'] || 0;
-                            const fat = nutrients['fat_100g'] || 0;
-                            const carbs = nutrients['carbohydrates_100g'] || 0;
-                            setFoodData({ calories, protein, fat, carbs });
-                        } else {
-                            setFoodData({ error: 'Could not find nutritional information for this product.' });
-                        }
+                    const data = await fetchFoodDataByBarcode(barcode);
+                    console.log(data);
+                    if (data.status === 1) {
+                        const nutrients = data.product.nutriments;
+                        const calories = nutrients['energy-kcal_100g'] || 0;
+                        const protein = nutrients['proteins_100g'] || 0;
+                        const fat = nutrients['fat_100g'] || 0;
+                        const carbs = nutrients['carbohydrates_100g'] || 0;
+                        setFoodData({ calories, protein, fat, carbs });
                     } else {
-                        console.error('Failed to fetch food data:', response.status);
-                        setFoodData({ error: 'Failed to fetch food data. Please try again later.' });
+                        setFoodData({ error: 'Could not find nutritional information for this product.' });
                     }
                 } catch (error) {
                     console.error('Error fetching food data:', error);

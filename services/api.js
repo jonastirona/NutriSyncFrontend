@@ -76,3 +76,16 @@ export const loadMoreResults = async (keyword, pageNum, pageSize) => {
     throw new Error(error.response?.data?.message || 'Load more results failed');
   }
 };
+
+export const fetchFoodDataByBarcode = async (barcode) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/barcode`, {
+      params: { barcode }
+    });
+    console.log('Fetch food data by barcode response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Fetch food data by barcode error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Fetch food data by barcode failed');
+  }
+};
