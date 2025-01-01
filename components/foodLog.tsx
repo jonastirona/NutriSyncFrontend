@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import foodLogStyles from '../styles/foodLogStyles';
 
 // arbitrary data for display purposes
 const foodData = [
@@ -18,51 +19,17 @@ const foodData = [
 // Component to display food log
 export default function FoodLog() {
   return (
-    <View style={localStyles.container}>
-      <Text style={localStyles.title}>Food Log</Text>
+    <View style={foodLogStyles.container}>
+      <Text style={foodLogStyles.title}>Food Log</Text>
       {/* ScrollView to allow scrolling if content exceeds screen height */}
-      <ScrollView style={localStyles.scrollContainer}>
+      <ScrollView style={foodLogStyles.scrollContainer}>
         {foodData.map((food, index) => (
-          <View key={index} style={localStyles.foodItem}>
-            <Text style={localStyles.foodName}>{food.name}</Text>
-            <Text style={localStyles.foodCalories}>{food.calories} kcal</Text>
+          <View key={index} style={foodLogStyles.foodItem}>
+            <Text style={foodLogStyles.foodName}>{food.name}</Text>
+            <Text style={foodLogStyles.foodCalories}>{food.calories} kcal</Text>
           </View>
         ))}
       </ScrollView>
     </View>
   );
 }
-
-const localStyles = StyleSheet.create({
-  container: {
-    margin: 10,
-    backgroundColor: '#2D2D44',
-    borderRadius: 10,
-    padding: 10,
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: '#D4A5FF',
-    textAlign: 'center',
-  },
-  scrollContainer: {
-    maxHeight: 200,
-  },
-  foodItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-    padding: 10,
-    backgroundColor: '#1A1A2E',
-    borderRadius: 5,
-  },
-  foodName: {
-    fontSize: 16,
-    color: '#A390E4',
-  },
-  foodCalories: {
-    fontSize: 16,
-    color: '#76c7c0',
-  },
-});
