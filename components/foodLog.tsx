@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import styles from '../styles';
+import styles from '../styles/styles';
 
 const foodData = [
   { name: 'Apple', calories: 95 },

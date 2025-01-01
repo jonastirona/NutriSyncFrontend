@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import styles from '../styles';
+import styles from '../styles/styles';
+import scannerStyles from '../styles/scannerStyles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
@@ -55,14 +56,14 @@ const Scanner = () => {
     return (
         <View style={styles.container}>
             <RNCamera
-                style={styles.camera}
+                style={scannerStyles.camera}
                 onBarCodeRead={onCodeScanned}
                 captureAudio={false}
             >
-                <View style={styles.topContent}>
+                <View style={scannerStyles.topContent}>
                     <Text style={styles.title}>Scan a barcode</Text>
                 </View>
-                <View style={styles.bottomContent}>
+                <View style={scannerStyles.bottomContent}>
                     <Text style={styles.subtitle}>Align the barcode within the frame</Text>
                 </View>
             </RNCamera>
@@ -72,38 +73,38 @@ const Scanner = () => {
                 {foodData && foodData.error && <Text style={styles.subtitle}>{foodData.error}</Text>}
                 {foodData && !foodData.error && (
                     <View style={styles.circleContainer}>
-                        <View style={localStyles.circleValueContainer}>
+                        <View style={scannerStyles.circleValueContainer}>
                              <PercentageBar
                                  label="Calories"
                                  percentage={foodData.calories ? parseFloat(foodData.calories.toFixed(1)) : 0}
                                  value = {foodData.calories}
                              />
                         </View>
-                        <View style={localStyles.circleValueContainer}>
+                        <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Fat"
                                 percentage={foodData.fat ? parseFloat(foodData.fat.toFixed(1)) : 0}
                                 value = {foodData.fat}
-                                circleStyle = {localStyles.smallerCircle}
-                                textStyle = {localStyles.smallerCircleText}
+                                circleStyle = {scannerStyles.smallerCircle}
+                                textStyle = {scannerStyles.smallerCircleText}
                             />
                         </View>
-                         <View style={localStyles.circleValueContainer}>
+                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Protein"
                                 percentage={foodData.protein ? parseFloat(foodData.protein.toFixed(1)) : 0}
                                 value = {foodData.protein}
-                                circleStyle = {localStyles.smallerCircle}
-                                textStyle = {localStyles.smallerCircleText}
+                                circleStyle = {scannerStyles.smallerCircle}
+                                textStyle = {scannerStyles.smallerCircleText}
                             />
                          </View>
-                        <View style={localStyles.circleValueContainer}>
+                        <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Carbs"
                                 percentage={foodData.carbs ? parseFloat(foodData.carbs.toFixed(1)) : 0}
                                 value = {foodData.carbs}
-                                circleStyle = {localStyles.smallerCircle}
-                                textStyle = {localStyles.smallerCircleText}
+                                circleStyle = {scannerStyles.smallerCircle}
+                                textStyle = {scannerStyles.smallerCircleText}
                             />
                         </View>
                     </View>
@@ -114,21 +115,5 @@ const Scanner = () => {
         </View>
     );
 };
-
-const localStyles = StyleSheet.create({
-    circleValueContainer:{
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-      smallerCircle:{
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-        borderWidth: 5,
-    },
-    smallerCircleText:{
-        fontSize: 16,
-    },
-});
 
 export default Scanner;

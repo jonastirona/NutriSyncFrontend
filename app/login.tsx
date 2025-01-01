@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles';
+import styles from '../styles/styles';
 import { loginUser } from '../services/api';
 
 export default function Login() {

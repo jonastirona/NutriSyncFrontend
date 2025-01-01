@@ -5,13 +5,13 @@ import {
     TextInput,
     TouchableOpacity,
     FlatList,
-    StyleSheet,
     ActivityIndicator,
 } from 'react-native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
-import styles from '../styles';
+import styles from '../styles/styles';
+import searchStyles from '../styles/searchStyles';
 
 interface FoodNutrient {
     nutrientName: string;
@@ -41,7 +41,6 @@ const SearchScreen = () => {
         setHasMore(true);
     };
 
-
     const searchFood = async () => {
         setLoading(true);
         setError('');
@@ -55,12 +54,12 @@ const SearchScreen = () => {
             }
             const data = await response.json();
             if (data.foods.length === 0) {
-              setError('No food items found. Please try another search');
+                setError('No food items found. Please try another search');
             } else {
-             setSearchResults(data.foods);
-              if(data.foods.length < pageSize){
-                setHasMore(false);
-              }
+                setSearchResults(data.foods);
+                if (data.foods.length < pageSize) {
+                    setHasMore(false);
+                }
             }
         } catch (error: any) {
             setError(`Error fetching data: ${error.message}`);
@@ -71,7 +70,7 @@ const SearchScreen = () => {
     };
 
     const loadMoreResults = async () => {
-       if (!keyword || loading || !hasMore) return;
+        if (!keyword || loading || !hasMore) return;
         setLoading(true);
         try {
             const nextPage = searchPage + 1;
@@ -83,16 +82,14 @@ const SearchScreen = () => {
             }
             const data = await response.json();
             if (data.foods.length > 0) {
-              setSearchResults([...searchResults, ...data.foods]);
-              setSearchPage(nextPage);
-                 if(data.foods.length < pageSize){
+                setSearchResults([...searchResults, ...data.foods]);
+                setSearchPage(nextPage);
+                if (data.foods.length < pageSize) {
                     setHasMore(false);
                 }
+            } else {
+                setHasMore(false);
             }
-           else {
-                 setHasMore(false);
-             }
-
         } catch (error: any) {
             console.error('Error fetching more data', error);
             setError(`Error fetching more data: ${error.message}`);
@@ -106,23 +103,23 @@ const SearchScreen = () => {
     };
 
     const renderItem = ({ item, index }: { item: FoodItem; index: number }) => (
-        <View style={localStyles.itemContainer}>
+        <View style={searchStyles.itemContainer}>
             <TouchableOpacity onPress={() => toggleExpand(index)}>
-                <Text style={localStyles.itemTitle}>{item.description}</Text>
+                <Text style={searchStyles.itemTitle}>{item.description}</Text>
             </TouchableOpacity>
             {expandedItem === index && (
-                <View style={localStyles.dropdown}>
-                    <View style={localStyles.percentageContainer}>
+                <View style={searchStyles.dropdown}>
+                    <View style={searchStyles.percentageContainer}>
                         <PercentageCircle
                             label="Fat"
                             percentage={
                                 item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value || 0
                             }
-                             value={
+                            value={
                                 item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value
                             }
-                            circleStyle = {localStyles.smallerCircle}
-                            textStyle = {localStyles.smallerCircleText}
+                            circleStyle={searchStyles.smallerCircle}
+                            textStyle={searchStyles.smallerCircleText}
                         />
                         <PercentageCircle
                             label="Protein"
@@ -132,8 +129,8 @@ const SearchScreen = () => {
                             value={
                                 item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value
                             }
-                             circleStyle = {localStyles.smallerCircle}
-                            textStyle = {localStyles.smallerCircleText}
+                            circleStyle={searchStyles.smallerCircle}
+                            textStyle={searchStyles.smallerCircleText}
                         />
                         <PercentageCircle
                             label="Carbohydrates"
@@ -147,18 +144,18 @@ const SearchScreen = () => {
                                     (n) => n.nutrientName === 'Carbohydrate, by difference',
                                 )?.value
                             }
-                             circleStyle = {localStyles.smallerCircle}
-                            textStyle = {localStyles.smallerCircleText}
+                            circleStyle={searchStyles.smallerCircle}
+                            textStyle={searchStyles.smallerCircleText}
                         />
                     </View>
-                    <View style={localStyles.calorieContainer}>
+                    <View style={searchStyles.calorieContainer}>
                         <PercentageBar
                             label="Calories"
                             percentage={
                                 item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0
                             }
-                            value = {
-                                 item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value
+                            value={
+                                item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value
                             }
                         />
                     </View>
@@ -169,16 +166,16 @@ const SearchScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={localStyles.searchContainer}>
+            <View style={searchStyles.searchContainer}>
                 <TextInput
-                    style={localStyles.input}
+                    style={searchStyles.input}
                     placeholder="Search for food"
                     placeholderTextColor="#A390E4"
                     value={keyword}
                     onChangeText={setKeyword}
                 />
-                <TouchableOpacity style={localStyles.button} onPress={searchFood}>
-                    <Text style={localStyles.buttonText}>Search</Text>
+                <TouchableOpacity style={searchStyles.button} onPress={searchFood}>
+                    <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
             {error ? <Text style={styles.subtitle}>{error}</Text> : null}
@@ -195,66 +192,5 @@ const SearchScreen = () => {
         </View>
     );
 };
-
-const localStyles = StyleSheet.create({
-    searchContainer: {
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: '#A390E4',
-        borderWidth: 1,
-        marginTop: 150,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: '#D4A5FF',
-        width: '90%',
-    },
-    button: {
-        backgroundColor: '#A390E4',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    buttonText: {
-        color: '#1A1A2E',
-        fontWeight: 'bold',
-    },
-    itemContainer: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#D4A5FF',
-    },
-    itemTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#D4A5FF',
-    },
-    dropdown: {
-        padding: 10,
-        backgroundColor: '#1A1A2E',
-        marginTop: 10,
-    },
-    percentageContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-      smallerCircle: {
-        width: 70,
-        height: 70,
-        borderRadius: 50,
-        borderWidth: 5,
-    },
-    smallerCircleText: {
-        fontSize: 16,
-    },
-      calorieContainer: {
-        marginTop: 10
-    },
-});
-
 
 export default SearchScreen;

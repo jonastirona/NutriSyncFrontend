@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { View, Text, ScrollView, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
 import FoodLog from '../components/foodLog';
 import { BottomNavigation } from '../components/bottomNavigation';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles';
+import styles from '../styles/styles';
+import homeStyles from '../styles/homeStyles';
 import { format, subDays, addDays, isToday } from 'date-fns';
 import { PanGestureHandler, GestureHandlerRootView, State } from 'react-native-gesture-handler';
 
@@ -78,19 +79,19 @@ export default function Home() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <Text style={[localStyles.title, { fontSize: getFontSize(title) }]}>{title}</Text>
-                <View style={localStyles.dateNavigation}>
-                    <TouchableOpacity onPress={handleYesterday} style={localStyles.dateButton}>
-                        <Text style={localStyles.dateButtonText}>{`<< ${yesterdayDate}`}</Text>
+                <Text style={[homeStyles.title, { fontSize: getFontSize(title) }]}>{title}</Text>
+                <View style={homeStyles.dateNavigation}>
+                    <TouchableOpacity onPress={handleYesterday} style={homeStyles.dateButton}>
+                        <Text style={homeStyles.dateButtonText}>{`<< ${yesterdayDate}`}</Text>
                     </TouchableOpacity>
-                    <View style={localStyles.currentDateContainer}>
-                        <Text style={localStyles.dateText}>
+                    <View style={homeStyles.currentDateContainer}>
+                        <Text style={homeStyles.dateText}>
                             {currentDate}{' '}
-                            {isToday(selectedDate) && <Text style={localStyles.todayText}>(Today)</Text>}
+                            {isToday(selectedDate) && <Text style={homeStyles.todayText}>(Today)</Text>}
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={handleTomorrow} style={localStyles.dateButton}>
-                        <Text style={localStyles.dateButtonText}>{`${tomorrowDate} >>`}</Text>
+                    <TouchableOpacity onPress={handleTomorrow} style={homeStyles.dateButton}>
+                        <Text style={homeStyles.dateButtonText}>{`${tomorrowDate} >>`}</Text>
                     </TouchableOpacity>
                 </View>
                 <PanGestureHandler
@@ -98,7 +99,7 @@ export default function Home() {
                     onHandlerStateChange={onHandlerStateChange}
                 >
                     <Animated.View style={{ transform: [{ translateX }] }}>
-                        <ScrollView style={localStyles.scrollView}>
+                        <ScrollView style={homeStyles.scrollView}>
                             <View style={styles.circleContainer}>
                                 <PercentageCircle
                                     label="Protein"
@@ -118,12 +119,12 @@ export default function Home() {
                             </View>
                             <PercentageBar label="Calorie Goal" percentage={80} value={80} />
                             <FoodLog />
-                            <View style={localStyles.buttonContainer}>
-                                <TouchableOpacity style={localStyles.button} onPress={() => navigateTo('Search')}>
-                                    <Text style={localStyles.buttonText}>Add Food</Text>
+                            <View style={homeStyles.buttonContainer}>
+                                <TouchableOpacity style={homeStyles.button} onPress={() => navigateTo('search')}>
+                                    <Text style={homeStyles.buttonText}>Add Food</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={localStyles.button} onPress={() => navigateTo('Scanner')}>
-                                    <Text style={localStyles.buttonText}>Scan Barcode</Text>
+                                <TouchableOpacity style={homeStyles.button} onPress={() => navigateTo('scanner')}>
+                                    <Text style={homeStyles.buttonText}>Scan Barcode</Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
@@ -134,64 +135,3 @@ export default function Home() {
         </GestureHandlerRootView>
     );
 }
-
-const localStyles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: '#1A1A2E',
-        borderColor: '#D4A5FF',
-        borderWidth: 1,
-    },
-    title: {
-        fontWeight: 'bold',
-        color: '#D4A5FF',
-        marginTop: 75,
-        textAlign: 'center',
-    },
-    dateNavigation: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
-    dateButton: {
-        padding: 10,
-        backgroundColor: '#A390E4',
-        borderRadius: 5,
-    },
-    dateButtonText: {
-        color: '#1A1A2E',
-        fontWeight: 'bold',
-    },
-    currentDateContainer: {
-        alignItems: 'center',
-    },
-    dateText: {
-        fontSize: 16,
-        color: '#D4A5FF',
-    },
-    todayText: {
-        fontSize: 12,
-        color: '#D4A5FF',
-    },
-    buttonContainer: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 0,
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#A390E4',
-        paddingVertical: 16,
-        paddingHorizontal: 5,
-        borderRadius: 8,
-        width: '40%',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
-    buttonText: {
-        fontSize: 15,
-        color: '#1A1A2E',
-        fontWeight: 'bold',
-    },
-});

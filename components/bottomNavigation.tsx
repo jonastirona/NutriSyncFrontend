@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles';
+import styles from '../styles/styles';
 
 export const BottomNavigation = () => {
   const navigation = useNavigation();
