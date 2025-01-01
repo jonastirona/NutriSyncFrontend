@@ -42,3 +42,37 @@ export const signupUser = async (email, username, password) => {
     throw new Error(error.response?.data?.message || 'Signup failed');
   }
 };
+
+export const searchFood = async (keyword, pageNum, pageSize) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/lookup`, {
+      params: {
+        keyword,
+        pageNum,
+        size: pageSize
+      }
+    });
+    console.log('Search food response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Search food error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Search food failed');
+  }
+};
+
+export const loadMoreResults = async (keyword, pageNum, pageSize) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/lookup`, {
+      params: {
+        keyword,
+        pageNum,
+        size: pageSize
+      }
+    });
+    console.log('Load more results response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Load more results error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Load more results failed');
+  }
+};

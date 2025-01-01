@@ -12,6 +12,7 @@ import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
 import styles from '../styles/styles';
 import searchStyles from '../styles/searchStyles';
+import { searchFood, loadMoreResults } from '../services/api';
 
 interface FoodNutrient {
     nutrientName: string;
@@ -41,18 +42,12 @@ const SearchScreen = () => {
         setHasMore(true);
     };
 
-    const searchFood = async () => {
+    const handleSearchFood = async () => {
         setLoading(true);
         setError('');
         resetStates();
         try {
-            const response = await fetch(
-                `http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/lookup?keyword=${encodeURIComponent(keyword)}&pageNum=1&size=${pageSize}`,
-            );
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+            const data = await searchFood(keyword, 1, pageSize);
             if (data.foods.length === 0) {
                 setError('No food items found. Please try another search');
             } else {
@@ -69,18 +64,12 @@ const SearchScreen = () => {
         }
     };
 
-    const loadMoreResults = async () => {
+    const handleLoadMoreResults = async () => {
         if (!keyword || loading || !hasMore) return;
         setLoading(true);
         try {
             const nextPage = searchPage + 1;
-            const response = await fetch(
-                `http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/lookup?keyword=${encodeURIComponent(keyword)}&pageNum=${nextPage}&size=${pageSize}`,
-            );
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
+            const data = await loadMoreResults(keyword, nextPage, pageSize);
             if (data.foods.length > 0) {
                 setSearchResults([...searchResults, ...data.foods]);
                 setSearchPage(nextPage);
@@ -174,7 +163,7 @@ const SearchScreen = () => {
                     value={keyword}
                     onChangeText={setKeyword}
                 />
-                <TouchableOpacity style={searchStyles.button} onPress={searchFood}>
+                <TouchableOpacity style={searchStyles.button} onPress={handleSearchFood}>
                     <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
@@ -184,7 +173,7 @@ const SearchScreen = () => {
                 data={searchResults}
                 keyExtractor={(item) => item.fdcId.toString()}
                 renderItem={renderItem}
-                onEndReached={loadMoreResults}
+                onEndReached={handleLoadMoreResults}
                 onEndReachedThreshold={0.1}
                 ListFooterComponent={loading ? <ActivityIndicator size="small" color={styles.title.color} /> : null}
             />
