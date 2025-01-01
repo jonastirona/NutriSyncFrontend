@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// url for the backend server
 const BASE_URL = 'http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com';
 
+// function to login user
 export const loginUser = async (username, password) => {
   try {
     const response = await axios.post(
@@ -22,6 +24,7 @@ export const loginUser = async (username, password) => {
   }
 };
 
+// function to signup user
 export const signupUser = async (email, username, password) => {
   try {
     const response = await axios.post(
@@ -43,6 +46,7 @@ export const signupUser = async (email, username, password) => {
   }
 };
 
+// function to get food search results
 export const searchFood = async (keyword, pageNum, pageSize) => {
   try {
     const response = await axios.get(`${BASE_URL}/lookup`, {
@@ -60,6 +64,7 @@ export const searchFood = async (keyword, pageNum, pageSize) => {
   }
 };
 
+// function to load more search results
 export const loadMoreResults = async (keyword, pageNum, pageSize) => {
   try {
     const response = await axios.get(`${BASE_URL}/lookup`, {
@@ -77,6 +82,7 @@ export const loadMoreResults = async (keyword, pageNum, pageSize) => {
   }
 };
 
+// function to get food data by barcode
 export const fetchFoodDataByBarcode = async (barcode) => {
   try {
     const response = await axios.get(`${BASE_URL}/barcode`, {
