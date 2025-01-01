@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
+// Props for PercentageCircle component
 interface PercentageCircleProps {
     label: string;
     percentage: number;
@@ -10,6 +11,7 @@ interface PercentageCircleProps {
     textStyle?: any;
 }
 
+// Component to display a percentage circle
 export default function PercentageCircle({ label, percentage, value, circleStyle, textStyle }: PercentageCircleProps) {
     return (
         <View style={localStyles.container}>

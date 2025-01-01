@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import styles from '../styles/styles';
 
+// arbitrary data for display purposes
 const foodData = [
   { name: 'Apple', calories: 95 },
   { name: 'Banana', calories: 105 },
@@ -15,10 +15,12 @@ const foodData = [
   { name: 'Milk', calories: 103 },
 ];
 
+// Component to display food log
 export default function FoodLog() {
   return (
     <View style={localStyles.container}>
       <Text style={localStyles.title}>Food Log</Text>
+      {/* ScrollView to allow scrolling if content exceeds screen height */}
       <ScrollView style={localStyles.scrollContainer}>
         {foodData.map((food, index) => (
           <View key={index} style={localStyles.foodItem}>

@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
+// Props for PercentageBar component
 interface PercentageBarProps {
     label: string;
     percentage: number;
     value?: number;
 }
 
+// Component to display a percentage bar
 export default function PercentageBar({ label, percentage, value }: PercentageBarProps) {
     return (
         <View style={localStyles.container}>
