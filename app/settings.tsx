@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BottomNavigation } from '../components/bottomNavigation';
+import { getUserGoal, setUserGoal } from '../services/api';
 import styles from '../styles/styles';
 
 // settings screen
@@ -14,8 +15,7 @@ const SettingsScreen = () => {
         // fetch current goal from backend
         const fetchGoal = async () => {
             try {
-                const response = await fetch(`http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/getgoal?username=jonastirona`);
-                const data = await response.json();
+                const data = await getUserGoal('jonastirona');
                 if (data.length > 0) {
                     setCurrentGoal(data[0].user_calorie_goal);
                 }
@@ -30,9 +30,7 @@ const SettingsScreen = () => {
     // function to set goal
     const handleSetGoal = async () => {
         try {
-            await fetch(`http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com/setgoal?username=jonastirona&goal=${goal}`, {
-                method: 'POST',
-            });
+            await setUserGoal('jonastirona', goal);
             setCurrentGoal(goal);
             setGoal('');
         } catch (error) {

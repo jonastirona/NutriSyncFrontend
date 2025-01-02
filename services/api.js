@@ -109,3 +109,31 @@ export const updateDailyLog = async (logData) => {
     throw new Error(error.response?.data?.message || 'Failed to update daily log');
   }
 };
+
+// function to get user goal
+export const getUserGoal = async (username) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/getgoal`, {
+      params: { username }
+    });
+    console.log('Get user goal response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Get user goal error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to get user goal');
+  }
+};
+
+// function to set user goal
+export const setUserGoal = async (username, goal) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/setgoal`, null, {
+      params: { username, goal }
+    });
+    console.log('Set user goal response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Set user goal error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to set user goal');
+  }
+};
