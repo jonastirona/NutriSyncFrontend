@@ -95,3 +95,16 @@ export const fetchFoodDataByBarcode = async (barcode) => {
     throw new Error(error.response?.data?.message || 'Fetch food data by barcode failed');
   }
 };
+
+export const updateDailyLog = async (logData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/updatelog`, null, {
+      params: logData
+    });
+    console.log('Update daily log response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Update daily log error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to update daily log');
+  }
+};
