@@ -3,13 +3,13 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 
-// Bottom navigation bar
+// bottom navigation bar
 export const BottomNavigation = () => {
   const navigation = useNavigation();
 
   type ScreenNames = 'home' | 'search' | 'scanner' | 'login';
 
-  // Function to navigate to different screens
+  // function to navigate to different screens
   const Navigate = (screen: ScreenNames) => {
     navigation.reset({
       index: 0,
@@ -17,7 +17,7 @@ export const BottomNavigation = () => {
     });
   };
 
-  // Return bottom navigation bar
+  // return bottom navigation bar
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>

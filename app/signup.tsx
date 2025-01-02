@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 import { signupUser } from '../services/api';
 
-// Signup component
+// signup component
 export default function Signup() {
   // state variables
   const navigation = useNavigation();
