@@ -58,6 +58,44 @@ const searchStyles = StyleSheet.create({
     calorieContainer: {
         marginTop: 10,
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: '#D4A5FF',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalButton: {
+        backgroundColor: '#1A1A2E',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        marginTop: 15,
+    },
+    modalButtonText: {
+        color: '#A390E4',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+        color: '#1A1A2E',
+    },
 });
 
 export default searchStyles;

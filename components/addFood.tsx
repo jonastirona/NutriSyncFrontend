@@ -12,7 +12,7 @@ interface AddFoodProps {
     protein: number;
     carbs: number;
     fat: number;
-    onPress: () => void;
+    onPress: (success: boolean) => void;
 }
 
 // AddFood component
@@ -22,9 +22,10 @@ const AddFood: React.FC<AddFoodProps> = ({ username, date, fooditem, calories, p
         try {
             const logData = { username, date, fooditem, calories, protein, carbs, fat };
             await updateDailyLog(logData);
-            onPress();
+            onPress(true);
         } catch (error) {
             console.error('Error updating daily log:', error);
+            onPress(false);
         }
     };
 

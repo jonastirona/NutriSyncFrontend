@@ -6,10 +6,13 @@ import {
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
+    Modal,
+    StyleSheet,
 } from 'react-native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
+import AddFood from '../components/addFood';
 import styles from '../styles/styles';
 import searchStyles from '../styles/searchStyles';
 import { searchFood, loadMoreResults } from '../services/api';
@@ -37,6 +40,8 @@ const SearchScreen = () => {
     const [error, setError] = useState('');
     const [searchPage, setSearchPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [message, setMessage] = useState<string | null>(null);
+    const [modalVisible, setModalVisible] = useState(false);
     const pageSize = 10;
 
     // function to reset states
@@ -157,6 +162,20 @@ const SearchScreen = () => {
                             }
                         />
                     </View>
+                    {/* AddFood component */}
+                    <AddFood
+                        username="username" // replace with actual username
+                        date={new Date().toISOString().split('T')[0]} // current date in YYYY-MM-DD format
+                        fooditem={item.description}
+                        calories={item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0}
+                        protein={item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value || 0}
+                        carbs={item.foodNutrients.find((n) => n.nutrientName === 'Carbohydrate, by difference')?.value || 0}
+                        fat={item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value || 0}
+                        onPress={(success: boolean) => {
+                            setMessage(success ? 'Food added to log' : 'Failed to add food to log');
+                            setModalVisible(true);
+                        }}
+                    />
                 </View>
             )}
         </View>
@@ -178,6 +197,25 @@ const SearchScreen = () => {
                     <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
+            {/* Display modal message */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={searchStyles.centeredView}>
+                    <View style={searchStyles.modalView}>
+                        <Text style={searchStyles.modalText}>{message}</Text>
+                        <TouchableOpacity
+                            style={searchStyles.modalButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={searchStyles.modalButtonText}>Dismiss</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             {/* Search results */}
             {error ? <Text style={styles.subtitle}>{error}</Text> : null}
             {loading && <ActivityIndicator size="large" color={styles.title.color} />}
