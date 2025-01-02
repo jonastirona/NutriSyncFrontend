@@ -96,6 +96,7 @@ export const fetchFoodDataByBarcode = async (barcode) => {
   }
 };
 
+// function to get daily log data
 export const updateDailyLog = async (logData) => {
   try {
     const response = await axios.post(`${BASE_URL}/updatelog`, null, {
