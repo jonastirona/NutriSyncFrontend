@@ -7,7 +7,7 @@ import styles from '../styles/styles';
 export const BottomNavigation = () => {
   const navigation = useNavigation();
 
-  type ScreenNames = 'home' | 'search' | 'scanner' | 'login';
+  type ScreenNames = 'home' | 'search' | 'scanner' | 'settings';
 
   // function to navigate to different screens
   const Navigate = (screen: ScreenNames) => {
@@ -30,8 +30,8 @@ export const BottomNavigation = () => {
         <TouchableOpacity onPress={() => Navigate('scanner')} style={styles.navButton}>
           <Text style={styles.navButtonText}>Scanner</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Navigate('login')} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Log Out</Text>
+        <TouchableOpacity onPress={() => Navigate('settings')} style={styles.navButton}>
+          <Text style={styles.navButtonText}>Settings</Text>
         </TouchableOpacity>
       </View>
     </View>
