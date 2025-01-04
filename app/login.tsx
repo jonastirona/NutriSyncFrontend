@@ -13,13 +13,14 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 import { loginUser } from '../services/api';
+import { useUser } from '../context/userContext';
 
-// Login component
+// login component
 export default function Login() {
-  // useNavigation hook to access navigation object
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setUsername: setGlobalUsername } = useUser();
 
   // function to handle login
   const handleLogin = async () => {
@@ -27,6 +28,7 @@ export default function Login() {
       const data = await loginUser(username, password);
       console.log('Login response:', data);
       Alert.alert('Success', 'Logged in successfully!');
+      setGlobalUsername(username); // set the global username
       navigation.reset({
         index: 0,
         routes: [{ name: 'home' as never }],
@@ -40,17 +42,13 @@ export default function Login() {
     }
   };
 
-  // Login component
   return (
-    // KeyboardAvoidingView to handle keyboard behavior
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      {/* TouchableWithoutFeedback to dismiss keyboard */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          {/* Login form */}
           <Text style={styles.title}>Log In</Text>
           <Text style={styles.subtitle}>Welcome back!</Text>
 
@@ -78,7 +76,6 @@ export default function Login() {
             </TouchableOpacity>
           </View>
             
-          {/* Sign Up link */}
           <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'signup' as never }] })}>
             <Text style={styles.linkText}>Don’t have an account? Sign Up</Text>
           </TouchableOpacity>
