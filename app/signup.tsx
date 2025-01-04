@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
 import { signupUser } from '../services/api';
+import { useUser } from '../context/userContext';
 
 // signup component
 export default function Signup() {
@@ -20,6 +21,7 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { setUsername: setGlobalUsername } = useUser();
 
   // function to handle signup
   const handleSignup = async () => {
@@ -31,9 +33,10 @@ export default function Signup() {
     try {
       await signupUser({ username, email, password });
       Alert.alert('Success', 'User registered successfully');
+      setGlobalUsername(username); // set the global username
       navigation.reset({
         index: 0,
-        routes: [{ name: 'login' as never }],
+        routes: [{ name: 'home' as never }],
       });
     } catch (error) {
       Alert.alert('Error', 'Failed to register user');
