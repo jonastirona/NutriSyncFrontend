@@ -4,6 +4,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 interface UserContextType {
   username: string;
   setUsername: (username: string) => void;
+  resetUsername: () => void;
 }
 
 // create a context
@@ -11,11 +12,18 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 // create provider component
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    // set username state
   const [username, setUsername] = useState<string>('');
 
+  // function to reset username
+  const resetUsername = () => {
+    setUsername(() => {
+      console.log('Username has been reset');
+      return '';
+    });
+  };
+
   return (
-    <UserContext.Provider value={{ username, setUsername }}>
+    <UserContext.Provider value={{ username, setUsername, resetUsername }}>
       {children}
     </UserContext.Provider>
   );

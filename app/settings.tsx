@@ -4,18 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import { getUserGoal, setUserGoal } from '../services/api';
 import styles from '../styles/styles';
+import { useUser } from '../context/userContext';
 
 // settings screen
 const SettingsScreen = () => {
     const [goal, setGoal] = useState('');
     const [currentGoal, setCurrentGoal] = useState<string | null>(null);
     const navigation = useNavigation();
+    const { username, resetUsername } = useUser();
 
     useEffect(() => {
         // fetch current goal from backend
         const fetchGoal = async () => {
             try {
-                const data = await getUserGoal('jonastirona');
+                const data = await getUserGoal(username);
                 if (data.length > 0) {
                     setCurrentGoal(data[0].user_calorie_goal);
                 }
@@ -25,12 +27,12 @@ const SettingsScreen = () => {
         };
 
         fetchGoal();
-    }, []);
+    }, [username]);
 
     // function to set goal
     const handleSetGoal = async () => {
         try {
-            await setUserGoal('jonastirona', goal);
+            await setUserGoal(username, goal);
             setCurrentGoal(goal);
             setGoal('');
         } catch (error) {
@@ -38,7 +40,15 @@ const SettingsScreen = () => {
         }
     };
 
+    // log when username has been reset
+    useEffect(() => {
+        if (username === '') {
+            console.log('Username has been reset');
+        }
+    }, [username]);
+
     const handleLogout = () => {
+        resetUsername(); // reset the global username
         navigation.reset({
             index: 0,
             routes: [{ name: 'login' as never }],
@@ -49,12 +59,11 @@ const SettingsScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Settings</Text>
-            {currentGoal ? (
+            <Text style={styles.subtitle}>
+                Your goal is the amount of calories you want to eat in a day. Please enter your goal below.
+            </Text>
+            {currentGoal && (
                 <Text style={styles.subtitle}>Current Goal: {currentGoal} calories</Text>
-            ) : (
-                <Text style={styles.subtitle}>
-                    Your goal is the amount of calories you want to eat in a day. Please enter your goal below.
-                </Text>
             )}
             <View style={styles.inputContainer}>
                 <TextInput
