@@ -137,3 +137,17 @@ export const setUserGoal = async (username, goal) => {
     throw new Error(error.response?.data?.message || 'Failed to set user goal');
   }
 };
+
+// function to get daily log data for a specific user
+export const getDailyLog = async (username) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/getlog`, {
+      params: { username }
+    });
+    console.log('Get daily log response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Get daily log error:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to get daily log');
+  }
+};
