@@ -135,10 +135,10 @@ export default function Home() {
                                 />
                             </View>
                             {/* calorie info bars */}
-                            <PercentageBar label="Calorie Goal" percentage={80} value={80} />
+                            <PercentageBar label="Calorie Goal" value={80} />
                             
                             {/* food log */}
-                            <FoodLog />
+                            <FoodLog date={currentDate} />
                             
                             {/* buttons for adding food and scanning barcodes */}
                             <View style={homeStyles.buttonContainer}>
