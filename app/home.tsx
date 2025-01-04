@@ -9,14 +9,16 @@ import styles from '../styles/styles';
 import homeStyles from '../styles/homeStyles';
 import { format, subDays, addDays, isToday } from 'date-fns';
 import { PanGestureHandler, GestureHandlerRootView, State } from 'react-native-gesture-handler';
+import { useUser } from '../context/userContext';
 
 const { width } = Dimensions.get('window');
 
+// home component
 export default function Home() {
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const translateX = useRef(new Animated.Value(0)).current;
-    const username = "username";
+    const { username } = useUser();
     const title = `${username}'s Dashboard`;
 
     // function to determine font size based on text length
@@ -34,13 +36,13 @@ export default function Home() {
         });
     };
 
-    //function to handle the swipe gesture to change the date to yesterday
+    // function to handle the swipe gesture to change the date to yesterday
     const handleYesterday = () => {
         setSelectedDate(subDays(selectedDate, 1));
         animateSwipe(-width);
     };
 
-    //function to handle the swipe gesture to change the date to tomorrow
+    // function to handle the swipe gesture to change the date to tomorrow
     const handleTomorrow = () => {
         setSelectedDate(addDays(selectedDate, 1));
         animateSwipe(width);
@@ -79,7 +81,7 @@ export default function Home() {
         }
     };
 
-    // get the date in the format MM/dd/yy
+    // get the date in the format mm/dd/yy
     const yesterdayDate = format(subDays(selectedDate, 1), 'MM/dd/yy');
     const tomorrowDate = format(addDays(selectedDate, 1), 'MM/dd/yy');
     const currentDate = format(selectedDate, 'MM/dd/yy');
@@ -88,10 +90,10 @@ export default function Home() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={styles.container}>
-                {/* Title */}
+                {/* title */}
                 <Text style={[homeStyles.title, { fontSize: getFontSize(title) }]}>{title}</Text>
                 
-                {/* Date Navigation */}
+                {/* date navigation */}
                 <View style={homeStyles.dateNavigation}>
                     <TouchableOpacity onPress={handleYesterday} style={homeStyles.dateButton}>
                         <Text style={homeStyles.dateButtonText}>{`<< ${yesterdayDate}`}</Text>
@@ -107,14 +109,14 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
 
-                {/* Content */}
+                {/* content */}
                 <PanGestureHandler
                     onGestureEvent={onGestureEvent}
                     onHandlerStateChange={onHandlerStateChange}
                 >
                     <Animated.View style={{ transform: [{ translateX }] }}>
                         <ScrollView style={homeStyles.scrollView}>
-                            {/* Nutrition Info Circles */}
+                            {/* nutrition info circles */}
                             <View style={styles.circleContainer}>
                                 <PercentageCircle
                                     label="Protein"
@@ -132,13 +134,13 @@ export default function Home() {
                                     value={110}
                                 />
                             </View>
-                            {/* Calorie Info Bars */}
+                            {/* calorie info bars */}
                             <PercentageBar label="Calorie Goal" percentage={80} value={80} />
                             
-                            {/* Food Log */}
+                            {/* food log */}
                             <FoodLog />
                             
-                            {/* Buttons for adding food and scanning barcodes */}
+                            {/* buttons for adding food and scanning barcodes */}
                             <View style={homeStyles.buttonContainer}>
                                 <TouchableOpacity style={homeStyles.button} onPress={() => navigateTo('search')}>
                                     <Text style={homeStyles.buttonText}>Add Food</Text>
@@ -150,7 +152,7 @@ export default function Home() {
                         </ScrollView>
                     </Animated.View>
                 </PanGestureHandler>
-                {/* Bottom Navigation Bar */}
+                {/* bottom navigation bar */}
                 <BottomNavigation />
             </View>
         </GestureHandlerRootView>
