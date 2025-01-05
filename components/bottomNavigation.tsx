@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/styles';
+import HomeIcon from '../assets/images/home.png';
+import SearchIcon from '../assets/images/search.png';
+import ScannerIcon from '../assets/images/scanner.png';
+import SettingsIcon from '../assets/images/settings.png';
 
 // bottom navigation bar
 export const BottomNavigation = () => {
@@ -22,16 +26,16 @@ export const BottomNavigation = () => {
     <View style={styles.container}>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => Navigate('home')} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Home</Text>
+          <Image source={HomeIcon} style={styles.navButtonIcon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Navigate('search')} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Search</Text>
+          <Image source={SearchIcon} style={styles.navButtonIcon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Navigate('scanner')} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Scanner</Text>
+          <Image source={ScannerIcon} style={styles.navButtonIcon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Navigate('settings')} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Settings</Text>
+          <Image source={SettingsIcon} style={styles.navButtonIcon} />
         </TouchableOpacity>
       </View>
     </View>

@@ -104,6 +104,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 250,
   },
+  navButtonIcon: {
+    width: 24,
+    height: 24,
+    tintColor: '#D4A5FF',
+  },
 });
 
 export default styles;
