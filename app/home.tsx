@@ -21,6 +21,8 @@ export default function Home() {
     const { username } = useUser();
     const title = `${username}'s Dashboard`;
 
+    const [totals, setTotals] = useState({ calories: 0, fat: 0, protein: 0, carbs: 0 });
+
     // function to determine font size based on text length
     const getFontSize = (text: string) => {
         if (text.length > 20) return 24;
@@ -125,25 +127,25 @@ export default function Home() {
                             <View style={styles.circleContainer}>
                                 <PercentageCircle
                                     label="Protein"
-                                    percentage={40}
-                                    value={40}
+                                    percentage={(totals.protein / 100) * 100}
+                                    value={totals.protein}
                                 />
                                 <PercentageCircle
                                     label="Carbs"
-                                    percentage={60}
-                                    value={60}
+                                    percentage={(totals.carbs / 100) * 100}
+                                    value={totals.carbs}
                                 />
                                 <PercentageCircle
                                     label="Fat"
-                                    percentage={110}
-                                    value={110}
+                                    percentage={(totals.fat / 100) * 100}
+                                    value={totals.fat}
                                 />
                             </View>
                             {/* calorie info bars */}
-                            <PercentageBar label="Calorie Goal" value={80} />
+                            <PercentageBar label="Calorie Goal" value={totals.calories} />
                             
                             {/* food log */}
-                            <FoodLog date={currentDate} />
+                            <FoodLog date={currentDate} onTotalsCalculated={setTotals} />
                             
                             {/* buttons for adding food and scanning barcodes */}
                             <View style={homeStyles.buttonContainer}>

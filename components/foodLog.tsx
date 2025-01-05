@@ -8,12 +8,13 @@ import { format, parseISO } from 'date-fns';
 // Props for FoodLog component
 interface FoodLogProps {
   date: string; // date in yyyy-MM-dd format
+  onTotalsCalculated: (totals: { calories: number; fat: number; protein: number; carbs: number }) => void;
 }
 
 // Component to display food log
-export default function FoodLog({ date }: FoodLogProps) {
+export default function FoodLog({ date, onTotalsCalculated }: FoodLogProps) {
   const { username } = useUser();
-  const [foodData, setFoodData] = useState<{ food_item: string; food_cals: number; }[]>([]);
+  const [foodData, setFoodData] = useState<{ food_item: string; food_cals: number; food_fat: number; food_protein: number; food_carbs: number }[]>([]);
 
   useEffect(() => {
     const fetchFoodLog = async () => {
@@ -24,6 +25,21 @@ export default function FoodLog({ date }: FoodLogProps) {
           return itemDate === date;
         });
         setFoodData(filteredData);
+
+        // Calculate totals
+        const totals = filteredData.reduce(
+          (acc: { calories: any; fat: any; protein: any; carbs: any; }, item: { food_cals: any; food_fat: any; food_protein: any; food_carbs: any; }) => {
+            acc.calories += item.food_cals;
+            acc.fat += item.food_fat;
+            acc.protein += item.food_protein;
+            acc.carbs += item.food_carbs;
+            return acc;
+          },
+          { calories: 0, fat: 0, protein: 0, carbs: 0 }
+        );
+
+        // Pass totals to parent component
+        onTotalsCalculated(totals);
       } catch (error) {
         console.error('Failed to fetch food log:', error);
       }
