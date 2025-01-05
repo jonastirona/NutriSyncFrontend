@@ -6,18 +6,18 @@ const percentageBarStyles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
         marginBottom: 5,
     },
     barContainer: {
         height: 20,
-        backgroundColor: '#2D2D44',
+        backgroundColor: '#fcfcfc', // White
         borderRadius: 10,
         overflow: 'hidden',
     },
     bar: {
         height: '100%',
-        backgroundColor: '#76c7c0',
+        backgroundColor: '#d11ffa', // Bright Pink
     },
     bottomContainer: {
         flexDirection: 'row',
@@ -26,11 +26,11 @@ const percentageBarStyles = StyleSheet.create({
     },
     percentage: {
         fontSize: 14,
-        color: '#A390E4',
+        color: '#b048fa', // Purple
     },
     valueText: {
         fontSize: 14,
-        color: '#A390E4',
+        color: '#b048fa', // Purple
     },
 });
 

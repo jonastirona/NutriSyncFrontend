@@ -2,13 +2,13 @@ import { StyleSheet } from 'react-native';
 
 const homeStyles = StyleSheet.create({
     scrollView: {
-        backgroundColor: '#1A1A2E',
-        borderColor: '#D4A5FF',
+        backgroundColor: '#18183C', // Deep Blue
+        borderColor: '#709afc', // Light Blue
         borderWidth: 1,
     },
     title: {
         fontWeight: 'bold',
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
         marginTop: 62,
         textAlign: 'center',
     },
@@ -20,11 +20,11 @@ const homeStyles = StyleSheet.create({
     },
     dateButton: {
         padding: 10,
-        backgroundColor: '#A390E4',
+        backgroundColor: '#d11ffa', // Bright Pink
         borderRadius: 5,
     },
     dateButtonText: {
-        color: '#1A1A2E',
+        color: '#18183C', // Deep Blue
         fontWeight: 'bold',
     },
     currentDateContainer: {
@@ -32,11 +32,11 @@ const homeStyles = StyleSheet.create({
     },
     dateText: {
         fontSize: 16,
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
     },
     todayText: {
         fontSize: 12,
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
     },
     buttonContainer: {
         width: '100%',
@@ -46,7 +46,7 @@ const homeStyles = StyleSheet.create({
         marginBottom: 20,
     },
     button: {
-        backgroundColor: '#A390E4',
+        backgroundColor: '#d11ffa', // Bright Pink
         paddingVertical: 16,
         paddingHorizontal: 5,
         borderRadius: 8,
@@ -56,7 +56,7 @@ const homeStyles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 15,
-        color: '#1A1A2E',
+        color: '#18183C', // Deep Blue
         fontWeight: 'bold',
     },
 });

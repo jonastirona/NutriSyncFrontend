@@ -8,13 +8,13 @@ const scannerStyles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue with opacity
     },
     bottomContent: {
         flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue with opacity
     },
     circleValueContainer: {
         alignItems: 'center',
@@ -25,9 +25,11 @@ const scannerStyles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         borderWidth: 5,
+        borderColor: '#d11ffa', // Bright Pink
     },
     smallerCircleText: {
         fontSize: 16,
+        color: '#b048fa', // Purple
     },
 });
 

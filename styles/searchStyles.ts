@@ -7,16 +7,16 @@ const searchStyles = StyleSheet.create({
     },
     input: {
         height: 40,
-        borderColor: '#A390E4',
+        borderColor: '#b048fa', // Purple
         borderWidth: 1,
         marginTop: 150,
         marginBottom: 10,
         paddingHorizontal: 10,
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
         width: '90%',
     },
     button: {
-        backgroundColor: '#A390E4',
+        backgroundColor: '#d11ffa', // Bright Pink
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -24,22 +24,22 @@ const searchStyles = StyleSheet.create({
         marginBottom: 20,
     },
     buttonText: {
-        color: '#1A1A2E',
+        color: '#18183C', // Deep Blue
         fontWeight: 'bold',
     },
     itemContainer: {
         padding: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#D4A5FF',
+        borderBottomColor: '#709afc', // Light Blue
     },
     itemTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
     },
     dropdown: {
         padding: 10,
-        backgroundColor: '#1A1A2E',
+        backgroundColor: '#18183C', // Deep Blue
         marginTop: 10,
     },
     percentageContainer: {
@@ -51,9 +51,11 @@ const searchStyles = StyleSheet.create({
         height: 70,
         borderRadius: 50,
         borderWidth: 5,
+        borderColor: '#d11ffa', // Bright Pink
     },
     smallerCircleText: {
         fontSize: 16,
+        color: '#b048fa', // Purple
     },
     calorieContainer: {
         marginTop: 10,
@@ -66,7 +68,7 @@ const searchStyles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: '#D4A5FF',
+        backgroundColor: '#709afc', // Light Blue
         borderRadius: 20,
         padding: 35,
         alignItems: 'center',
@@ -80,21 +82,21 @@ const searchStyles = StyleSheet.create({
         elevation: 5,
     },
     modalButton: {
-        backgroundColor: '#1A1A2E',
+        backgroundColor: '#18183C', // Deep Blue
         borderRadius: 20,
         padding: 10,
         elevation: 2,
         marginTop: 15,
     },
     modalButtonText: {
-        color: '#A390E4',
+        color: '#b048fa', // Purple
         fontWeight: 'bold',
         textAlign: 'center',
     },
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
-        color: '#1A1A2E',
+        color: '#18183C', // Deep Blue
     },
 });
 

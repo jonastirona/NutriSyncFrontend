@@ -60,7 +60,7 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
                         cx="35"
                         cy="35"
                         r={radius}
-                        stroke="#2D2D44"
+                        stroke='#fcfcfc' // White
                         strokeWidth="5"
                         fill="none"
                     />
@@ -68,7 +68,7 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
                         cx="35"
                         cy="35"
                         r={radius}
-                        stroke="#76c7c0"
+                        stroke='#d11ffa' // Bright Pink
                         strokeWidth="5"
                         fill="none"
                         strokeDasharray={circumference}

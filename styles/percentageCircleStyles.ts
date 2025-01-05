@@ -8,7 +8,7 @@ const percentageCircleStyles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
-        color: '#D4A5FF',
+        color: '#709afc', // Light Blue
     },
     svgContainer: {
         position: 'relative',
@@ -18,12 +18,12 @@ const percentageCircleStyles = StyleSheet.create({
     percentageText: {
         position: 'absolute',
         fontSize: 14,
-        color: '#A390E4',
+        color: '#b048fa', // Purple
     },
     valueText: {
         fontSize: 14,
         marginTop: 5,
-        color: '#A390E4',
+        color: '#b048fa', // Purple
     },
 });
 

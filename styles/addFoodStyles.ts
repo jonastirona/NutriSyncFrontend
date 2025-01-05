@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const addFoodStyles = StyleSheet.create({
     button: {
-        backgroundColor: '#A390E4',
+        backgroundColor: '#d11ffa', // Bright Pink
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -10,7 +10,7 @@ const addFoodStyles = StyleSheet.create({
         marginVertical: 10,
     },
     buttonText: {
-        color: '#1A1A2E',
+        color: '#18183C', // Deep Blue
         fontWeight: 'bold',
     },
 });

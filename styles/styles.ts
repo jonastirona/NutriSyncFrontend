@@ -3,32 +3,32 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A2E',
+    backgroundColor: '#18183C', // Deep Blue
     padding: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#D4A5FF',
+    color: '#709afc', // Light Blue
     marginTop: 200,
     textAlign: 'center',
   },
   settingsTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#D4A5FF',
+    color: '#709afc', // Light Blue
     marginTop: 150,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 18,
-    color: '#A390E4',
+    color: '#b048fa', // Purple
     textAlign: 'center',
     marginVertical: 20,
   },
   text: {
     fontSize: 10,
-    color: '#A390E4',
+    color: '#b048fa', // Purple
     textAlign: 'center',
     marginVertical: 10,
   },
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 18,
     borderRadius: 10,
-    backgroundColor: '#2D2D44',
-    color: '#D4A5FF',
+    backgroundColor: '#fcfcfc', // White
+    color: '#709afc', // Light Blue
     fontSize: 16,
     marginVertical: 12,
   },
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 90,
   },
   button: {
-    backgroundColor: '#A390E4',
+    backgroundColor: '#d11ffa', // Bright Pink
     paddingVertical: 16,
     paddingHorizontal: 22,
     borderRadius: 8,
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#1A1A2E',
+    color: '#18183C', // Deep Blue
     fontWeight: 'bold',
   },
   linkText: {
     fontSize: 14,
-    color: '#A390E4',
+    color: '#b048fa', // Purple
     textAlign: 'center',
     marginTop: 0,
     textDecorationLine: 'underline',
@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#1A1A2E',
+    backgroundColor: '#18183C', // Deep Blue
     borderTopWidth: 1,
-    borderTopColor: '#A390E4',
+    borderTopColor: '#b048fa', // Purple
     paddingHorizontal: 10,
   },
   navButton: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 16,
-    color: '#A390E4',
+    color: '#b048fa', // Purple
   },
   circleContainer: {
     flexDirection: 'row',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   navButtonIcon: {
     width: 24,
     height: 24,
-    tintColor: '#D4A5FF',
+    tintColor: '#709afc', // Light Blue
   },
 });
 
