@@ -98,6 +98,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginVertical: 20,
   },
+  logo: {
+    width: 250,
+    height: 50,
+    alignSelf: 'center',
+    marginTop: 250,
+  },
 });
 
 export default styles;
