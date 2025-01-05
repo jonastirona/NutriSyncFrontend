@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import styles from '../styles/styles';
 
 const percentageCircleStyles = StyleSheet.create({
     container: {
@@ -9,25 +8,22 @@ const percentageCircleStyles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 5,
-        color: styles.title.color,
+        color: '#D4A5FF',
     },
-    circle: {
-        width: 70,
-        height: 70,
-        borderRadius: 50,
-        borderWidth: 5,
-        borderColor: styles.button.backgroundColor,
+    svgContainer: {
+        position: 'relative',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    percentage: {
-        fontSize: 16,
-        color: styles.title.color,
+    percentageText: {
+        position: 'absolute',
+        fontSize: 14,
+        color: '#A390E4',
     },
     valueText: {
         fontSize: 14,
         marginTop: 5,
-        color: styles.title.color,
+        color: '#A390E4',
     },
 });
 
