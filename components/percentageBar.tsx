@@ -11,7 +11,7 @@ interface PercentageBarProps {
 }
 
 // Component to display a percentage bar
-export default function PercentageBar({ label, value }: PercentageBarProps) {
+export default function PercentageBar({ label, value = 0 }: PercentageBarProps) {
     const { username } = useContext(UserContext) || {};
     const [calorieGoal, setCalorieGoal] = useState<number | null>(null);
 
@@ -19,7 +19,10 @@ export default function PercentageBar({ label, value }: PercentageBarProps) {
         const fetchCalorieGoal = async () => {
             try {
                 const goal = await getUserGoal(username);
-                setCalorieGoal(goal.calorieGoal);
+                // Add null check here since the API returns an array
+                if (goal && Array.isArray(goal) && goal.length > 0) {
+                    setCalorieGoal(goal[0].user_calorie_goal);
+                }
             } catch (error) {
                 console.error('Failed to fetch user goal:', error);
             }
@@ -34,7 +37,8 @@ export default function PercentageBar({ label, value }: PercentageBarProps) {
         return <Text>Loading...</Text>;
     }
 
-    const percentage = (value / calorieGoal) * 100;
+    // Ensure both value and calorieGoal are numbers and not zero before calculating percentage
+    const percentage = (value && calorieGoal) ? Math.min((value / calorieGoal) * 100, 100) : 0;
 
     return (
         <View style={percentageBarStyles.container}>
@@ -43,8 +47,12 @@ export default function PercentageBar({ label, value }: PercentageBarProps) {
                 <View style={[percentageBarStyles.bar, { width: `${percentage}%` }]} />
             </View>
             <View style={percentageBarStyles.bottomContainer}>
-                <Text style={percentageBarStyles.percentage}>{percentage.toFixed(1)}%</Text>
-                <Text style={percentageBarStyles.valueText}>{value.toFixed(1)}</Text>
+                <Text style={percentageBarStyles.percentage}>
+                    {`${percentage.toFixed(1)}%`}
+                </Text>
+                <Text style={percentageBarStyles.valueText}>
+                    {`${value?.toFixed(1) || '0.0'} / ${calorieGoal?.toFixed(1) || '0.0'}`}
+                </Text>
             </View>
         </View>
     );
