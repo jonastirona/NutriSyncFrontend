@@ -6,14 +6,17 @@ import scannerStyles from '../styles/scannerStyles';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
+import AddFood from '../components/addFood';
 import { fetchFoodDataByBarcode } from '../services/api';
+import { useUser } from '../context/userContext';
 
-// Scanner component
+// scanner component
 const Scanner = () => {
     // state variables
     const [barcode, setBarcode] = useState<string | null>(null);
     const [foodData, setFoodData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const { username } = useUser();
 
     // function to handle barcode scan
     const onCodeScanned = ({ data }: { data: string }) => {
@@ -74,39 +77,51 @@ const Scanner = () => {
                 {foodData && !foodData.error && (
                     <View style={styles.circleContainer}>
                         <View style={scannerStyles.circleValueContainer}>
-                             <PercentageBar
-                                 label="Calories"
-                                 percentage={foodData.calories ? parseFloat(foodData.calories.toFixed(1)) : 0}
-                                 value = {foodData.calories}
-                             />
+                            <PercentageBar
+                                label="Calories"
+                                value={foodData.calories}
+                            />
                         </View>
                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Fat"
                                 percentage={foodData.fat ? parseFloat(foodData.fat.toFixed(1)) : 0}
-                                value = {foodData.fat}
-                                circleStyle = {scannerStyles.smallerCircle}
-                                textStyle = {scannerStyles.smallerCircleText}
+                                value={foodData.fat}
+                                circleStyle={scannerStyles.smallerCircle}
+                                textStyle={scannerStyles.smallerCircleText}
                             />
                         </View>
-                         <View style={scannerStyles.circleValueContainer}>
+                        <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Protein"
                                 percentage={foodData.protein ? parseFloat(foodData.protein.toFixed(1)) : 0}
-                                value = {foodData.protein}
-                                circleStyle = {scannerStyles.smallerCircle}
-                                textStyle = {scannerStyles.smallerCircleText}
+                                value={foodData.protein}
+                                circleStyle={scannerStyles.smallerCircle}
+                                textStyle={scannerStyles.smallerCircleText}
                             />
-                         </View>
+                        </View>
                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Carbs"
                                 percentage={foodData.carbs ? parseFloat(foodData.carbs.toFixed(1)) : 0}
-                                value = {foodData.carbs}
-                                circleStyle = {scannerStyles.smallerCircle}
-                                textStyle = {scannerStyles.smallerCircleText}
+                                value={foodData.carbs}
+                                circleStyle={scannerStyles.smallerCircle}
+                                textStyle={scannerStyles.smallerCircleText}
                             />
                         </View>
+                        <AddFood
+                            username={username}
+                            date={new Date().toISOString().split('T')[0]} // current date in YYYY-MM-DD format
+                            fooditem={barcode || ''}
+                            calories={foodData.calories}
+                            protein={foodData.protein}
+                            carbs={foodData.carbs}
+                            fat={foodData.fat}
+                            onPress={(success: boolean) => {
+                                console.log('AddFood onPress called with success:', success);
+                                // Handle success or failure of adding food to log
+                            }}
+                        />
                     </View>
                 )}
             </View>
