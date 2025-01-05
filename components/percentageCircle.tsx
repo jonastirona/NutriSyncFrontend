@@ -12,7 +12,9 @@ interface PercentageCircleProps {
 
 const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
     const { username } = useContext(UserContext) || {};
-    const [userGoal, setUserGoal] = useState<number>(0); // default to 0 if no value
+    const [userGoal, setUserGoal] = useState<number>(0);
+    const [percentage, setPercentage] = useState<number>(0);
+    const [macroGoal, setMacroGoal] = useState<number>(0);
 
     useEffect(() => {
         const fetchUserGoal = async () => {
@@ -29,25 +31,31 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
         fetchUserGoal();
     }, [username]);
 
-    let percentage = 0;
-    let goalInGrams = 0;
+    useEffect(() => {
+        // Calculate macro goals based on calorie distribution
+        let calculatedMacroGoal = 0;
+        switch (label) {
+            case 'Fat':
+                // 15% of calories from fat, divided by 9 calories per gram
+                calculatedMacroGoal = (userGoal * 0.15) / 9;
+                break;
+            case 'Protein':
+                // 30% of calories from protein, divided by 4 calories per gram
+                calculatedMacroGoal = (userGoal * 0.30) / 4;
+                break;
+            case 'Carbs':
+                // 55% of calories from carbs, divided by 4 calories per gram
+                calculatedMacroGoal = (userGoal * 0.55) / 4;
+                break;
+        }
 
-    switch (label) {
-        case 'Fat':
-            percentage = 15;
-            goalInGrams = (userGoal * 0.15) / 9;
-            break;
-        case 'Protein':
-            percentage = 30;
-            goalInGrams = (userGoal * 0.30) / 4;
-            break;
-        case 'Carbs':
-            percentage = 55;
-            goalInGrams = (userGoal * 0.55) / 4;
-            break;
-    }
+        // Calculate actual percentage based on value vs goal
+        const newPercentage = calculatedMacroGoal > 0 ? Math.min((value / calculatedMacroGoal) * 100, 100) : 0;
+        setPercentage(newPercentage);
+        setMacroGoal(calculatedMacroGoal);
+    }, [userGoal, value, label]);
 
-    const radius = 30; // Smaller radius
+    const radius = 30;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
@@ -60,7 +68,7 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
                         cx="35"
                         cy="35"
                         r={radius}
-                        stroke='#fcfcfc' // White
+                        stroke='#fcfcfc'
                         strokeWidth="5"
                         fill="none"
                     />
@@ -68,16 +76,20 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
                         cx="35"
                         cy="35"
                         r={radius}
-                        stroke='#d11ffa' // Bright Pink
+                        stroke='#d11ffa'
                         strokeWidth="5"
                         fill="none"
                         strokeDasharray={circumference}
                         strokeDashoffset={strokeDashoffset}
                     />
                 </Svg>
-                <Text style={percentageCircleStyles.percentageText}>{percentage}%</Text>
+                <Text style={percentageCircleStyles.percentageText}>
+                    {Math.round(percentage)}%
+                </Text>
             </View>
-            <Text style={percentageCircleStyles.valueText}>{value}/{goalInGrams.toFixed(1)}g</Text>
+            <Text style={percentageCircleStyles.valueText}>
+                {value.toFixed(1)}/{macroGoal.toFixed(1)}g
+            </Text>
         </View>
     );
 };

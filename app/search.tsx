@@ -117,26 +117,17 @@ const SearchScreen = () => {
                     <View style={searchStyles.percentageContainer}>
                         <PercentageCircle
                             label="Fat"
-                            value={item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value}
-                            circleStyle={searchStyles.smallerCircle}
-                            textStyle={searchStyles.smallerCircleText}
-                            percentage={0}
+                            value={item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value || 0}
                         />
                         <PercentageCircle
                             label="Protein"
-                            value={item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value}
-                            circleStyle={searchStyles.smallerCircle}
-                            textStyle={searchStyles.smallerCircleText}
-                            percentage={0}
+                            value={item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value || 0}
                         />
                         <PercentageCircle
-                            label="Carbohydrates"
+                            label="Carbs"
                             value={item.foodNutrients.find(
                                 (n) => n.nutrientName === 'Carbohydrate, by difference'
-                            )?.value}
-                            circleStyle={searchStyles.smallerCircle}
-                            textStyle={searchStyles.smallerCircleText}
-                            percentage={0}
+                            )?.value || 0}
                         />
                     </View>
                     <View style={searchStyles.calorieContainer}>
