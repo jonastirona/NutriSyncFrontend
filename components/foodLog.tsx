@@ -3,13 +3,14 @@ import { View, Text, ScrollView } from 'react-native';
 import foodLogStyles from '../styles/foodLogStyles';
 import { getDailyLog } from '../services/api';
 import { useUser } from '../context/userContext';
+import { format, parseISO } from 'date-fns';
 
-// props for FoodLog component
+// Props for FoodLog component
 interface FoodLogProps {
-  date: string; // date in mm/dd/yy format
+  date: string; // date in yyyy-MM-dd format
 }
 
-// component to display food log
+// Component to display food log
 export default function FoodLog({ date }: FoodLogProps) {
   const { username } = useUser();
   const [foodData, setFoodData] = useState<{ food_item: string; food_cals: number; }[]>([]);
@@ -18,7 +19,10 @@ export default function FoodLog({ date }: FoodLogProps) {
     const fetchFoodLog = async () => {
       try {
         const data = await getDailyLog(username);
-        const filteredData = data.filter((item: { date: string; }) => item.date === date);
+        const filteredData = data.filter((item: { date: string; }) => {
+          const itemDate = format(parseISO(item.date), 'yyyy-MM-dd');
+          return itemDate === date;
+        });
         setFoodData(filteredData);
       } catch (error) {
         console.error('Failed to fetch food log:', error);
@@ -33,7 +37,7 @@ export default function FoodLog({ date }: FoodLogProps) {
   return (
     <View style={foodLogStyles.container}>
       <Text style={foodLogStyles.title}>Food Log</Text>
-      {/* scrollView to allow scrolling if content exceeds screen height */}
+      {/* ScrollView to allow scrolling if content exceeds screen height */}
       <ScrollView style={foodLogStyles.scrollContainer}>
         {foodData.map((food, index) => (
           <View key={index} style={foodLogStyles.foodItem}>

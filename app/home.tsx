@@ -81,10 +81,10 @@ export default function Home() {
         }
     };
 
-    // get the date in the format mm/dd/yy
-    const yesterdayDate = format(subDays(selectedDate, 1), 'MM/dd/yy');
-    const tomorrowDate = format(addDays(selectedDate, 1), 'MM/dd/yy');
-    const currentDate = format(selectedDate, 'MM/dd/yy');
+    // get the date in the format yyyy-MM-dd
+    const yesterdayDate = format(subDays(selectedDate, 1), 'yyyy-MM-dd');
+    const tomorrowDate = format(addDays(selectedDate, 1), 'yyyy-MM-dd');
+    const currentDate = format(selectedDate, 'yyyy-MM-dd');
 
     // render the home screen
     return (

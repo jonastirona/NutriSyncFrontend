@@ -20,14 +20,16 @@
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on food products."
       },
-      "bundleIdentifier": "com.anonymous.NutriSync"
+      "bundleIdentifier": "com.anonymous.NutriSync",
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.NutriSync"
+      "package": "com.anonymous.NutriSync",
+      "newArchEnabled": true
     },
     "plugins": []
   }

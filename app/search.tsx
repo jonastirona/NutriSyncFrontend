@@ -7,7 +7,6 @@ import {
     FlatList,
     ActivityIndicator,
     Modal,
-    StyleSheet,
 } from 'react-native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
@@ -16,6 +15,7 @@ import AddFood from '../components/addFood';
 import styles from '../styles/styles';
 import searchStyles from '../styles/searchStyles';
 import { searchFood, loadMoreResults } from '../services/api';
+import { useUser } from '../context/userContext';
 
 // interface for food nutrient
 interface FoodNutrient {
@@ -43,6 +43,8 @@ const SearchScreen = () => {
     const [message, setMessage] = useState<string | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
     const pageSize = 10;
+
+    const { username } = useUser();
 
     // function to reset states
     const resetStates = () => {
@@ -115,56 +117,39 @@ const SearchScreen = () => {
                     <View style={searchStyles.percentageContainer}>
                         <PercentageCircle
                             label="Fat"
-                            percentage={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value || 0
-                            }
-                            value={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value
-                            }
+                            value={item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value}
                             circleStyle={searchStyles.smallerCircle}
                             textStyle={searchStyles.smallerCircleText}
+                            percentage={0}
                         />
                         <PercentageCircle
                             label="Protein"
-                            percentage={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value || 0
-                            }
-                            value={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value
-                            }
+                            value={item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value}
                             circleStyle={searchStyles.smallerCircle}
                             textStyle={searchStyles.smallerCircleText}
+                            percentage={0}
                         />
                         <PercentageCircle
                             label="Carbohydrates"
-                            percentage={
-                                item.foodNutrients.find(
-                                    (n) => n.nutrientName === 'Carbohydrate, by difference',
-                                )?.value || 0
-                            }
-                            value={
-                                item.foodNutrients.find(
-                                    (n) => n.nutrientName === 'Carbohydrate, by difference',
-                                )?.value
-                            }
+                            value={item.foodNutrients.find(
+                                (n) => n.nutrientName === 'Carbohydrate, by difference'
+                            )?.value}
                             circleStyle={searchStyles.smallerCircle}
                             textStyle={searchStyles.smallerCircleText}
+                            percentage={0}
                         />
                     </View>
                     <View style={searchStyles.calorieContainer}>
                         <PercentageBar
                             label="Calories"
-                            percentage={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0
-                            }
                             value={
-                                item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value
+                                item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0
                             }
                         />
                     </View>
                     {/* AddFood component */}
                     <AddFood
-                        username="username" // replace with actual username
+                        username={username}
                         date={new Date().toISOString().split('T')[0]} // current date in YYYY-MM-DD format
                         fooditem={item.description}
                         calories={item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0}
@@ -172,6 +157,7 @@ const SearchScreen = () => {
                         carbs={item.foodNutrients.find((n) => n.nutrientName === 'Carbohydrate, by difference')?.value || 0}
                         fat={item.foodNutrients.find((n) => n.nutrientName === 'Total lipid (fat)')?.value || 0}
                         onPress={(success: boolean) => {
+                            console.log('AddFood onPress called with success:', success); // Log when onPress is called
                             setMessage(success ? 'Food added to log' : 'Failed to add food to log');
                             setModalVisible(true);
                         }}
@@ -197,7 +183,7 @@ const SearchScreen = () => {
                     <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
-            {/* Display modal message */}
+            {/* display modal message */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -216,7 +202,7 @@ const SearchScreen = () => {
                     </View>
                 </View>
             </Modal>
-            {/* Search results */}
+            {/* search results */}
             {error ? <Text style={styles.subtitle}>{error}</Text> : null}
             {loading && <ActivityIndicator size="large" color={styles.title.color} />}
             <FlatList

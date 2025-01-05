@@ -17,10 +17,14 @@ interface AddFoodProps {
 
 // AddFood component
 const AddFood: React.FC<AddFoodProps> = ({ username, date, fooditem, calories, protein, carbs, fat, onPress }) => {
+    console.log('AddFood component rendered with props:', { username, date, fooditem, calories, protein, carbs, fat }); // Log when the component is rendered
+
     // function to handle the button press
     const handlePress = async () => {
+        console.log('Button pressed'); // Log when the button is pressed
         try {
             const logData = { username, date, fooditem, calories, protein, carbs, fat };
+            console.log('Sending data to backend:', logData); // Log the data being sent to the backend
             await updateDailyLog(logData);
             onPress(true);
         } catch (error) {
