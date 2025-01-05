@@ -9,7 +9,7 @@ const homeStyles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         color: '#D4A5FF',
-        marginTop: 75,
+        marginTop: 62,
         textAlign: 'center',
     },
     dateNavigation: {
