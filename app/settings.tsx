@@ -59,13 +59,19 @@ const SettingsScreen = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-                <Text style={styles.title}>Settings</Text>
+                <Text style={styles.settingsTitle}>Settings</Text>
                 <Text style={styles.subtitle}>
                     Your goal is the amount of calories you want to eat in a day. Please enter your goal below.
                 </Text>
                 {currentGoal && (
                     <Text style={styles.subtitle}>Current Goal: {currentGoal} calories</Text>
                 )}
+                <Text style={styles.text}>
+                    Macro goals are calculated as follows:
+                    {'\n'}- Fat: 15% of total calorie goal (1g of fat = 9 calories)
+                    {'\n'}- Protein: 30% of total calorie goal (1g of protein = 4 calories)
+                    {'\n'}- Carbs: 55% of total calorie goal (1g of carbs = 4 calories)
+                </Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}

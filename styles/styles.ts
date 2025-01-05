@@ -13,11 +13,24 @@ const styles = StyleSheet.create({
     marginTop: 200,
     textAlign: 'center',
   },
+  settingsTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#D4A5FF',
+    marginTop: 150,
+    textAlign: 'center',
+  },
   subtitle: {
     fontSize: 18,
     color: '#A390E4',
     textAlign: 'center',
     marginVertical: 20,
+  },
+  text: {
+    fontSize: 10,
+    color: '#A390E4',
+    textAlign: 'center',
+    marginVertical: 10,
   },
   inputContainer: {
     alignItems: 'center',
