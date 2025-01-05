@@ -86,6 +86,11 @@ export default function Home() {
     const tomorrowDate = format(addDays(selectedDate, 1), 'yyyy-MM-dd');
     const currentDate = format(selectedDate, 'yyyy-MM-dd');
 
+    // get the date in the format MM/dd/yy for display
+    const displayYesterdayDate = format(subDays(selectedDate, 1), 'MM/dd/yy');
+    const displayTomorrowDate = format(addDays(selectedDate, 1), 'MM/dd/yy');
+    const displayCurrentDate = format(selectedDate, 'MM/dd/yy');
+
     // render the home screen
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -96,16 +101,16 @@ export default function Home() {
                 {/* date navigation */}
                 <View style={homeStyles.dateNavigation}>
                     <TouchableOpacity onPress={handleYesterday} style={homeStyles.dateButton}>
-                        <Text style={homeStyles.dateButtonText}>{`<< ${yesterdayDate}`}</Text>
+                        <Text style={homeStyles.dateButtonText}>{`<< ${displayYesterdayDate}`}</Text>
                     </TouchableOpacity>
                     <View style={homeStyles.currentDateContainer}>
                         <Text style={homeStyles.dateText}>
-                            {currentDate}{' '}
+                            {displayCurrentDate}{' '}
                             {isToday(selectedDate) && <Text style={homeStyles.todayText}>(Today)</Text>}
                         </Text>
                     </View>
                     <TouchableOpacity onPress={handleTomorrow} style={homeStyles.dateButton}>
-                        <Text style={homeStyles.dateButtonText}>{`${tomorrowDate} >>`}</Text>
+                        <Text style={homeStyles.dateButtonText}>{`${displayTomorrowDate} >>`}</Text>
                     </TouchableOpacity>
                 </View>
 
