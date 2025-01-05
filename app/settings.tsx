@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import { getUserGoal, setUserGoal } from '../services/api';
@@ -57,34 +57,36 @@ const SettingsScreen = () => {
 
     // return settings screen
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Settings</Text>
-            <Text style={styles.subtitle}>
-                Your goal is the amount of calories you want to eat in a day. Please enter your goal below.
-            </Text>
-            {currentGoal && (
-                <Text style={styles.subtitle}>Current Goal: {currentGoal} calories</Text>
-            )}
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter new goal"
-                    placeholderTextColor="#A390E4"
-                    value={goal}
-                    onChangeText={setGoal}
-                    keyboardType="numeric"
-                />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <Text style={styles.title}>Settings</Text>
+                <Text style={styles.subtitle}>
+                    Your goal is the amount of calories you want to eat in a day. Please enter your goal below.
+                </Text>
+                {currentGoal && (
+                    <Text style={styles.subtitle}>Current Goal: {currentGoal} calories</Text>
+                )}
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter new goal"
+                        placeholderTextColor="#A390E4"
+                        value={goal}
+                        onChangeText={setGoal}
+                        keyboardType="numeric"
+                    />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleSetGoal}>
+                        <Text style={styles.buttonText}>Set Goal</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                        <Text style={styles.buttonText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+                <BottomNavigation />
             </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleSetGoal}>
-                    <Text style={styles.buttonText}>Set Goal</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                    <Text style={styles.buttonText}>Logout</Text>
-                </TouchableOpacity>
-            </View>
-            <BottomNavigation />
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
