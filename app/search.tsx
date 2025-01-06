@@ -141,7 +141,6 @@ const SearchScreen = () => {
                     {/* AddFood component */}
                     <AddFood
                         username={username}
-                        date={new Date().toISOString().split('T')[0]} // current date in YYYY-MM-DD format
                         fooditem={item.description}
                         calories={item.foodNutrients.find((n) => n.nutrientName === 'Energy')?.value || 0}
                         protein={item.foodNutrients.find((n) => n.nutrientName === 'Protein')?.value || 0}
