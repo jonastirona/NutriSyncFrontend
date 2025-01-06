@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import foodLogStyles from '../styles/foodLogStyles';
 import { getDailyLog } from '../services/api';
 import { useUser } from '../context/userContext';
-import { format, parseISO } from 'date-fns';
+import { parseISO, startOfDay } from 'date-fns';
 
 // Props for FoodLog component
 interface FoodLogProps {
@@ -19,11 +19,19 @@ export default function FoodLog({ date, onTotalsCalculated }: FoodLogProps) {
   useEffect(() => {
     const fetchFoodLog = async () => {
       try {
+        console.log('Date passed to FoodLog:', date);
         const data = await getDailyLog(username);
-        const filteredData = data.filter((item: { date: string; }) => {
-          const itemDate = format(parseISO(item.date), 'yyyy-MM-dd');
-          return itemDate === date;
+
+        // Convert device's local date to UTC
+        const deviceDate = new Date(date);
+        const utcDate = new Date(deviceDate.toUTCString());
+
+        const filteredData = data.filter((item: { date: string }) => {
+          const itemDate = startOfDay(parseISO(item.date)); 
+          const selectedDate = startOfDay(utcDate); 
+          return itemDate.getTime() === selectedDate.getTime();
         });
+
         setFoodData(filteredData);
 
         // Calculate totals

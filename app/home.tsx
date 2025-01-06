@@ -75,10 +75,12 @@ export default function Home() {
         }
     };
 
-    const currentDate = format(selectedDate, 'yyyy-MM-dd');
     const displayYesterdayDate = format(subDays(selectedDate, 1), 'MM/dd/yy');
     const displayTomorrowDate = format(addDays(selectedDate, 1), 'MM/dd/yy');
     const displayCurrentDate = format(selectedDate, 'MM/dd/yy');
+
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    console.log('Date passed to FoodLog:', formattedDate);
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -119,7 +121,7 @@ export default function Home() {
                                 />
                             </View>
                             <PercentageBar label="Calorie Goal" value={totals.calories} />
-                            <FoodLog date={currentDate} onTotalsCalculated={setTotals} /> 
+                            <FoodLog date={formattedDate} onTotalsCalculated={setTotals} /> 
                             <View style={homeStyles.buttonContainer}>
                                 <TouchableOpacity style={homeStyles.button} onPress={() => navigateTo('search')}>
                                     <Text style={homeStyles.buttonText}>Add Food</Text>
