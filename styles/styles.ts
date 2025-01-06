@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 18,
     borderRadius: 10,
-    backgroundColor: '#f3d1f5', // Lavender
+    backgroundColor: '#22224a', // Dark Blue
     color: '#709afc', // Light Blue
     fontSize: 16,
     marginVertical: 12,
