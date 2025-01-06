@@ -165,7 +165,7 @@ export const updateDailyLog = async (username, date, fooditem, calories, protein
 // function to get user goal
 export const getUserGoal = async (username) => {
   try {
-    const response = await api.get('/getlog', {
+    const response = await api.get('/getgoal', {
       params: { username }
     });
     console.log('Get user goal response:', response.data);
