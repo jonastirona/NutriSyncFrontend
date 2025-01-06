@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, ScrollView, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
@@ -119,7 +119,7 @@ export default function Home() {
                                 />
                             </View>
                             <PercentageBar label="Calorie Goal" value={totals.calories} />
-                            <FoodLog date={currentDate} onTotalsCalculated={setTotals} />
+                            <FoodLog date={currentDate} onTotalsCalculated={setTotals} /> 
                             <View style={homeStyles.buttonContainer}>
                                 <TouchableOpacity style={homeStyles.button} onPress={() => navigateTo('search')}>
                                     <Text style={homeStyles.buttonText}>Add Food</Text>

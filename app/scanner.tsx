@@ -119,7 +119,6 @@ const Scanner = () => {
                             fat={foodData.fat}
                             onPress={(success: boolean) => {
                                 console.log('AddFood onPress called with success:', success);
-                                // Handle success or failure of adding food to log
                             }}
                         />
                     </View>

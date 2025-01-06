@@ -28,7 +28,7 @@ export default function FoodLog({ date, onTotalsCalculated }: FoodLogProps) {
 
         // Calculate totals
         const totals = filteredData.reduce(
-          (acc: { calories: any; fat: any; protein: any; carbs: any; }, item: { food_cals: any; food_fat: any; food_protein: any; food_carbs: any; }) => {
+          (acc: { calories: number; fat: number; protein: number; carbs: number; }, item: { food_cals: number; food_fat: number; food_protein: number; food_carbs: number; }) => {
             acc.calories += item.food_cals;
             acc.fat += item.food_fat;
             acc.protein += item.food_protein;
@@ -57,7 +57,7 @@ export default function FoodLog({ date, onTotalsCalculated }: FoodLogProps) {
       <ScrollView style={foodLogStyles.scrollContainer}>
         {foodData.map((food, index) => (
           <View key={index} style={foodLogStyles.foodItem}>
-            <Text style={foodLogStyles.foodName}>{food.food_item}</Text>
+            <Text style={foodLogStyles.foodName}>{food.food_item || 'Unknown Item'}</Text>
             <Text style={foodLogStyles.foodCalories}>{food.food_cals} calories</Text>
           </View>
         ))}

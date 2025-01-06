@@ -23,9 +23,8 @@ const AddFood: React.FC<AddFoodProps> = ({ username, date, fooditem, calories, p
     const handlePress = async () => {
         console.log('Button pressed'); // Log when the button is pressed
         try {
-            const logData = { username, date, fooditem, calories, protein, carbs, fat };
-            console.log('Sending data to backend:', logData); // Log the data being sent to the backend
-            await updateDailyLog(logData);
+            console.log('Sending data to backend:', { username, date, fooditem, calories, protein, carbs, fat }); // Log the data being sent to the backend
+            await updateDailyLog(username, date, fooditem, calories, protein, carbs, fat);
             onPress(true);
         } catch (error) {
             console.error('Error updating daily log:', error);
