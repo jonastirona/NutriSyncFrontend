@@ -19,7 +19,15 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on food products.",
-        "NSAllowsArbitraryLoads": true
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSExceptionDomains": {
+            "nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com": {
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+              "NSIncludesSubdomains": true
+            }
+          }
+        }
       },
       "bundleIdentifier": "com.anonymous.NutriSync",
       "newArchEnabled": true

@@ -2,18 +2,14 @@ import axios from 'axios';
 
 const BASE_URL = 'http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com';
 
-// Create axios instance with enhanced config
+// Create axios instance with simplified config
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 30000, // Increased timeout
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': '*/*',
-  },
-  // Explicitly set axios to use native XMLHttpRequest
-  adapter: 'http',
-  // Add validateStatus to handle all status codes
-  validateStatus: (status) => true,
+  }
 });
 
 // Add request interceptor for debugging
@@ -57,13 +53,12 @@ api.interceptors.response.use(
 // function to login user
 export const loginUser = async (username, password) => {
   try {
-    // Try with URLSearchParams format
-    const params = new URLSearchParams({
-      username,
-      password
+    const response = await api.post('/login', null, {
+      params: {
+        username,
+        password
+      }
     });
-
-    const response = await api.post(`/login?${params.toString()}`);
     console.log('Login response:', response.data);
     return response.data;
   } catch (error) {
@@ -80,13 +75,13 @@ export const loginUser = async (username, password) => {
 // function to signup user
 export const signupUser = async (email, username, password) => {
   try {
-    const params = new URLSearchParams({
-      email,
-      username,
-      password
+    const response = await api.post('/signup', null, {
+      params: {
+        email,
+        username,
+        password
+      }
     });
-
-    const response = await api.post(`/signup?${params.toString()}`);
     console.log('Signup response:', response.data);
     return response.data;
   } catch (error) {
@@ -148,17 +143,17 @@ export const fetchFoodDataByBarcode = async (barcode) => {
 // function to update daily log
 export const updateDailyLog = async (username, date, fooditem, calories, protein, carbs, fat) => {
   try {
-    const params = new URLSearchParams({
-      username,
-      date,
-      fooditem,
-      calories,
-      protein,
-      carbs,
-      fat
+    const response = await api.post('/updatelog', null, {
+      params: {
+        username,
+        date,
+        fooditem,
+        calories,
+        protein,
+        carbs,
+        fat
+      }
     });
-
-    const response = await api.post(`/updatelog?${params.toString()}`);
     console.log('Update daily log response:', response.data);
     return response.data;
   } catch (error) {
@@ -170,7 +165,7 @@ export const updateDailyLog = async (username, date, fooditem, calories, protein
 // function to get user goal
 export const getUserGoal = async (username) => {
   try {
-    const response = await api.get('/getgoal', {
+    const response = await api.get('/getlog', {
       params: { username }
     });
     console.log('Get user goal response:', response.data);
@@ -184,12 +179,12 @@ export const getUserGoal = async (username) => {
 // function to set user goal
 export const setUserGoal = async (username, goal) => {
   try {
-    const params = new URLSearchParams({
-      username,
-      goal
+    const response = await api.post('/setgoal', null, {
+      params: {
+        username,
+        goal
+      }
     });
-
-    const response = await api.post(`/setgoal?${params.toString()}`);
     console.log('Set user goal response:', response.data);
     return response.data;
   } catch (error) {
