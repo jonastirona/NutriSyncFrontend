@@ -2,32 +2,77 @@ import axios from 'axios';
 
 const BASE_URL = 'http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbeanstalk.com';
 
-// Create axios instance with default config
+// Create axios instance with enhanced config
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 30000, // Increased timeout
   headers: {
     'Content-Type': 'application/json',
-  }
+    'Accept': '*/*',
+  },
+  // Explicitly set axios to use native XMLHttpRequest
+  adapter: 'http',
+  // Add validateStatus to handle all status codes
+  validateStatus: (status) => true,
 });
+
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  config => {
+    console.log('🚀 Request:', {
+      url: config.url,
+      method: config.method,
+      params: config.params,
+      headers: config.headers
+    });
+    return config;
+  },
+  error => {
+    console.error('❌ Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  response => {
+    console.log('✅ Response:', {
+      status: response.status,
+      data: response.data,
+      headers: response.headers
+    });
+    return response;
+  },
+  error => {
+    console.error('❌ Response Error:', {
+      message: error.message,
+      code: error.code,
+      config: error.config,
+      response: error.response
+    });
+    return Promise.reject(error);
+  }
+);
 
 // function to login user
 export const loginUser = async (username, password) => {
   try {
-    const response = await api.post('/login', null, {
-      params: {
-        username,
-        password
-      }
+    // Try with URLSearchParams format
+    const params = new URLSearchParams({
+      username,
+      password
     });
+
+    const response = await api.post(`/login?${params.toString()}`);
     console.log('Login response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Login error:', error);
-    if (error.response) {
-      console.error('Error data:', error.response.data);
-      console.error('Error status:', error.response.status);
-    }
+    console.error('Login error details:', {
+      message: error.message,
+      stack: error.stack,
+      config: error.config,
+      response: error.response
+    });
     throw new Error(error.response?.data || 'Login failed');
   }
 };
@@ -35,13 +80,13 @@ export const loginUser = async (username, password) => {
 // function to signup user
 export const signupUser = async (email, username, password) => {
   try {
-    const response = await api.post('/signup', null, {
-      params: {
-        email,
-        username,
-        password
-      }
+    const params = new URLSearchParams({
+      email,
+      username,
+      password
     });
+
+    const response = await api.post(`/signup?${params.toString()}`);
     console.log('Signup response:', response.data);
     return response.data;
   } catch (error) {
@@ -103,17 +148,17 @@ export const fetchFoodDataByBarcode = async (barcode) => {
 // function to update daily log
 export const updateDailyLog = async (username, date, fooditem, calories, protein, carbs, fat) => {
   try {
-    const response = await api.post('/updatelog', null, {
-      params: {
-        username,
-        date,
-        fooditem,
-        calories,
-        protein,
-        carbs,
-        fat
-      }
+    const params = new URLSearchParams({
+      username,
+      date,
+      fooditem,
+      calories,
+      protein,
+      carbs,
+      fat
     });
+
+    const response = await api.post(`/updatelog?${params.toString()}`);
     console.log('Update daily log response:', response.data);
     return response.data;
   } catch (error) {
@@ -139,12 +184,12 @@ export const getUserGoal = async (username) => {
 // function to set user goal
 export const setUserGoal = async (username, goal) => {
   try {
-    const response = await api.post('/setgoal', null, {
-      params: { 
-        username,
-        goal
-      }
+    const params = new URLSearchParams({
+      username,
+      goal
     });
+
+    const response = await api.post(`/setgoal?${params.toString()}`);
     console.log('Set user goal response:', response.data);
     return response.data;
   } catch (error) {
