@@ -28,6 +28,8 @@ This repository is dedicated to the frontend of the product, responsible for the
 ## Project Status 🏁
 Frontend React Native app is a work in progress. The backend of the project is complete and unit tested in isolation.
 
+## Project Structure 🏗
+
 ### Client-Side (Frontend) 📱
 The frontend is built using React Native and Expo, providing a seamless and responsive user interface. Key components and screens include:
 
