@@ -11,7 +11,7 @@ const percentageBarStyles = StyleSheet.create({
     },
     barContainer: {
         height: 20,
-        backgroundColor: '#fcfcfc', // White
+        backgroundColor: '#e4c8fd', // Lavender
         borderRadius: 10,
         overflow: 'hidden',
     },

@@ -8,13 +8,13 @@ const scannerStyles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue with opacity
+        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue
     },
     bottomContent: {
         flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue with opacity
+        backgroundColor: 'rgba(24, 24, 60, 0.5)', // Deep Blue
     },
     circleValueContainer: {
         alignItems: 'center',

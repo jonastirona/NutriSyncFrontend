@@ -3,14 +3,14 @@ import { StyleSheet } from 'react-native';
 const foodLogStyles = StyleSheet.create({
   container: {
     margin: 10,
-    backgroundColor: '#ffedf5', // White
+    backgroundColor: '#709afc', // Light Blue
     borderRadius: 10,
     padding: 10,
   },
   title: {
     fontSize: 18,
     marginBottom: 10,
-    color: '#709afc', // Light Blue
+    color: '#b048fa', // Purple
     textAlign: 'center',
   },
   scrollContainer: {
