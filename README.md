@@ -31,14 +31,15 @@ Frontend React Native app is a work in progress. The backend of the project is c
 ## Project Structure 🏗
 
 ### Client-Side (Frontend) 📱
-The frontend is built using React Native and Expo, providing a seamless and responsive user interface. Key components and screens include:
+The frontend is built using React Native and Expo, providing a seamless and responsive user interface. Here are the key pages:
 
-- **Home Screen**: Displays an overview of the user's daily log and goals, of both the current day and past days.
-- **Login Screen**: Allows users to log in to their accounts.
-- **Signup Screen**: Enables new users to create an account.
-- **Search Screen**: Users can search for food items to log. This screen includes a search bar, search results, and detailed nutrient information for each food item.
-- **Scanner Screen**: Allows users to scan barcodes to quickly log food items.
-- **Settings Screen**: Provides options for users to customize their app experience.
+- **Index Page**: The landing page of the app, providing an overview and navigation to other sections.
+- **Login Page**: Allows users to log in to their accounts.
+- **Signup Page**: Enables new users to create an account.
+- **Home Page**: Displays an overview of the user's daily log and goals.
+- **Search Page**: Users can search for food items to log. This screen includes a search bar, search results, and detailed nutrient information for each food item.
+- **Scanner Page**: Allows users to scan barcodes to quickly log food items.
+- **Settings Page**: Provides options for users to customize their app experience.
 
 ### Server-Side (Backend) 🖥
 The backend is implemented using Node.js and Express.js, hosted on AWS Elastic Beanstalk. It handles user authentication, food data retrieval, and logging functionalities. Key endpoints include:

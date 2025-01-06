@@ -18,7 +18,8 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on food products."
+        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on food products.",
+        "NSAllowsArbitraryLoads": true
       },
       "bundleIdentifier": "com.anonymous.NutriSync",
       "newArchEnabled": true
