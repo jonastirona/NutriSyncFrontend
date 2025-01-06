@@ -164,7 +164,7 @@ const SearchScreen = () => {
             {/* Search input */}
             <View style={searchStyles.searchContainer}>
                 <TextInput
-                    style={searchStyles.input}
+                    style={styles.input} // Use input styles from styles.ts
                     placeholder="Search for food"
                     placeholderTextColor="#A390E4"
                     value={keyword}

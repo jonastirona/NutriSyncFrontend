@@ -3,17 +3,7 @@ import { StyleSheet } from 'react-native';
 const searchStyles = StyleSheet.create({
     searchContainer: {
         alignItems: 'center',
-        marginTop: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: '#b048fa', // Purple
-        borderWidth: 1,
-        marginTop: 150,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: '#709afc', // Light Blue
-        width: '90%',
+        marginTop: 75,
     },
     button: {
         backgroundColor: '#d11ffa', // Bright Pink
