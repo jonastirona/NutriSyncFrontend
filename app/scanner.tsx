@@ -85,28 +85,19 @@ const Scanner = () => {
                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Fat"
-                                percentage={foodData.fat ? parseFloat(foodData.fat.toFixed(1)) : 0}
                                 value={foodData.fat}
-                                circleStyle={scannerStyles.smallerCircle}
-                                textStyle={scannerStyles.smallerCircleText}
                             />
                         </View>
                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Protein"
-                                percentage={foodData.protein ? parseFloat(foodData.protein.toFixed(1)) : 0}
                                 value={foodData.protein}
-                                circleStyle={scannerStyles.smallerCircle}
-                                textStyle={scannerStyles.smallerCircleText}
                             />
                         </View>
                         <View style={scannerStyles.circleValueContainer}>
                             <PercentageCircle
                                 label="Carbs"
-                                percentage={foodData.carbs ? parseFloat(foodData.carbs.toFixed(1)) : 0}
                                 value={foodData.carbs}
-                                circleStyle={scannerStyles.smallerCircle}
-                                textStyle={scannerStyles.smallerCircleText}
                             />
                         </View>
                         <AddFood
