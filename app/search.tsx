@@ -30,8 +30,8 @@ interface FoodItem {
     foodNutrients: FoodNutrient[];
 }
 
-// SearchScreen component
-const SearchScreen = () => {
+// search screen component
+const Search = () => {
     // state variables
     const [keyword, setKeyword] = useState('');
     const [searchResults, setSearchResults] = useState<FoodItem[]>([]);
@@ -52,6 +52,29 @@ const SearchScreen = () => {
         setExpandedItem(null);
         setSearchPage(1);
         setHasMore(true);
+    };
+
+    // function to fetch initial food list
+    const fetchInitialFoodList = async () => {
+        setLoading(true);
+        setError('');
+        resetStates();
+        try {
+            const data = await searchFood('', 1, pageSize);
+            if (data.foods.length === 0) {
+                setError('No food items found.');
+            } else {
+                setSearchResults(data.foods);
+                if (data.foods.length < pageSize) {
+                    setHasMore(false);
+                }
+            }
+        } catch (error: any) {
+            setError(`Error fetching data: ${error.message}`);
+            console.error('Error fetching food data:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     // function to handle search food
@@ -79,7 +102,7 @@ const SearchScreen = () => {
 
     // function to handle load more results
     const handleLoadMoreResults = async () => {
-        if (!keyword || loading || !hasMore) return;
+        if (loading || !hasMore) return;
         setLoading(true);
         try {
             const nextPage = searchPage + 1;
@@ -157,6 +180,11 @@ const SearchScreen = () => {
         </View>
     );
 
+    // fetch initial food list on component mount
+    useEffect(() => {
+        fetchInitialFoodList();
+    }, []);
+
     // render component
     return (
         <View style={styles.container}>
@@ -208,4 +236,4 @@ const SearchScreen = () => {
     );
 };
 
-export default SearchScreen;
+export default Search;
