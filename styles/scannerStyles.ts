@@ -31,6 +31,31 @@ const scannerStyles = StyleSheet.create({
         fontSize: 16,
         color: '#b048fa', // Purple
     },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '10%',
+    },
+    loadingIndicator: {
+    },
+    errorText: {
+        fontSize: 16,
+        color: 'red',
+    },
+    circleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginBottom: 20,
+    },
+    percentageBarContainer: {
+        width: '100%',
+        marginBottom: 20,
+    },
+    addFoodContainer: {
+        width: '100%',
+    },
 });
 
 export default scannerStyles;
