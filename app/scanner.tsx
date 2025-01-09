@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Button } from 'react-native';
+import { View, Text, ActivityIndicator, Button, SafeAreaView } from 'react-native';
 import { Camera, CameraType, BarcodeScanningResult, useCameraPermissions, CameraView } from 'expo-camera';
 import styles from '../styles/styles';
 import scannerStyles from '../styles/scannerStyles';
@@ -72,10 +72,10 @@ const Scanner = () => {
 
     if (!permission.granted) {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Text style={styles.subtitle}>We need your permission to show the camera</Text>
                 <Button onPress={requestPermission} title="Grant Permission" />
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -84,78 +84,79 @@ const Scanner = () => {
     };
 
     return (
-        <View style={styles.container}>
-            {cameraActive && (
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                    <CameraView
-                        style={scannerStyles.camera}
-                        onBarcodeScanned={handleBarcodeScanned}
-                        barcodeScannerSettings={{
-                            barcodeTypes: ['ean13']
-                        }}
-                    >
-                        <View style={scannerStyles.bottomContent}>
-                            <Text style={styles.subtitle}>Align the barcode within the frame</Text>
+        <SafeAreaView style={styles.container}>
+            <View style={scannerStyles.mainContent}>
+                <Text style={scannerStyles.headerTitle}>Barcode Scanner</Text>
+                
+                {cameraActive && (
+                    <>
+                        <View style={scannerStyles.cameraContainer}>
+                            <CameraView
+                                style={scannerStyles.camera}
+                                onBarcodeScanned={handleBarcodeScanned}
+                                barcodeScannerSettings={{
+                                    barcodeTypes: ['ean13']
+                                }}
+                            />
                         </View>
-                    </CameraView>
-                    <View style={scannerStyles.topContent}>
-                        <Text style={styles.title}>Scan a barcode to get food info</Text>
+                        <Text style={scannerStyles.instructionText}>
+                            Align a barcode within the frame to get food info.
+                        </Text>
+                    </>
+                )}
+
+                {!cameraActive && (
+                    <View style={scannerStyles.resultsContainer}>
+                        {loading && <ActivityIndicator color="#fff" style={scannerStyles.loadingIndicator} />}
+                        {foodData?.error && <Text style={scannerStyles.errorText}>{foodData.error}</Text>}
+                        {foodData && !foodData.error && (
+                            <>
+                                <View style={scannerStyles.circleContainer}>
+                                    <View style={scannerStyles.circleValueContainer}>
+                                        <PercentageCircle
+                                            label="Fat"
+                                            value={foodData.fat}
+                                        />
+                                    </View>
+                                    <View style={scannerStyles.circleValueContainer}>
+                                        <PercentageCircle
+                                            label="Protein"
+                                            value={foodData.protein}
+                                        />
+                                    </View>
+                                    <View style={scannerStyles.circleValueContainer}>
+                                        <PercentageCircle
+                                            label="Carbs"
+                                            value={foodData.carbs}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={scannerStyles.percentageBarContainer}>
+                                    <PercentageBar
+                                        label="Calories"
+                                        value={foodData.calories}
+                                    />
+                                </View>
+                                <View style={scannerStyles.addFoodContainer}>
+                                    <AddFood
+                                        username={username}
+                                        fooditem={barcode || ''}
+                                        calories={foodData.calories}
+                                        protein={foodData.protein}
+                                        carbs={foodData.carbs}
+                                        fat={foodData.fat}
+                                        onPress={(success: boolean) => {
+                                            console.log('AddFood onPress called with success:', success);
+                                        }}
+                                    />
+                                </View>
+                            </>
+                        )}
                     </View>
-                </View>
-            )}
-
-            {!cameraActive && (
-                <View style={scannerStyles.container}>
-                    {loading && <ActivityIndicator color="#fff" style={scannerStyles.loadingIndicator} />}
-                    {foodData?.error && <Text style={scannerStyles.errorText}>{foodData.error}</Text>}
-                    {foodData && !foodData.error && (
-                        <>
-                            <View style={scannerStyles.circleContainer}>
-                                <View style={scannerStyles.circleValueContainer}>
-                                    <PercentageCircle
-                                        label="Fat"
-                                        value={foodData.fat}
-                                    />
-                                </View>
-                                <View style={scannerStyles.circleValueContainer}>
-                                    <PercentageCircle
-                                        label="Protein"
-                                        value={foodData.protein}
-                                    />
-                                </View>
-                                <View style={scannerStyles.circleValueContainer}>
-                                    <PercentageCircle
-                                        label="Carbs"
-                                        value={foodData.carbs}
-                                    />
-                                </View>
-                            </View>
-                            <View style={scannerStyles.percentageBarContainer}>
-                                <PercentageBar
-                                    label="Calories"
-                                    value={foodData.calories}
-                                />
-                            </View>
-                            <View style={scannerStyles.addFoodContainer}>
-                                <AddFood
-                                    username={username}
-                                    fooditem={barcode || ''}
-                                    calories={foodData.calories}
-                                    protein={foodData.protein}
-                                    carbs={foodData.carbs}
-                                    fat={foodData.fat}
-                                    onPress={(success: boolean) => {
-                                        console.log('AddFood onPress called with success:', success);
-                                    }}
-                                />
-                            </View>
-                        </>
-                    )}
-                </View>
-            )}
-
+                )}
+            </View>
             <BottomNavigation />
-        </View>
+        </SafeAreaView>
     );
 };
 
