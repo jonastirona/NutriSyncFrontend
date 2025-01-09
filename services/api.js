@@ -5,7 +5,7 @@ const BASE_URL = 'http://nutrisyncbackend-env.eba-2wtn6ifs.us-east-2.elasticbean
 // Create axios instance with simplified config
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 30000,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': '*/*',
