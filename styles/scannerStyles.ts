@@ -1,73 +1,76 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
+const CAMERA_SIZE = width * 0.8;
 
 const scannerStyles = StyleSheet.create({
-    mainContent: {
+    content: {
         flex: 1,
-        paddingBottom: 60, // Account for bottom navigation
+        justifyContent: 'flex-start',
+        marginTop: -150
     },
-    headerTitle: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#709afc',
-        marginTop: 10,
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    cameraContainer: {
+    permissionContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20
+    },
+    scannerSection: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 140,
-        marginBottom: 80,
+        flex: 1
+    },
+    cameraWrapper: {
+        width: CAMERA_SIZE,
+        height: CAMERA_SIZE,
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 20,
+        backgroundColor: '#18183C'
     },
     camera: {
-        width: width - 40,
-        height: width - 40,
-        marginVertical: 20,
+        flex: 1
     },
-    instructionText: {
-        fontSize: 15,
-        color: '#b048fa',
-        textAlign: 'center',
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        paddingHorizontal: 20,
-        marginBottom: 5,
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(24, 24, 60, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    resultsContainer: {
+    scanArea: {
+        width: CAMERA_SIZE * 0.7,
+        height: CAMERA_SIZE * 0.7,
+        borderWidth: 2,
+        borderColor: '#709afc',
+        backgroundColor: 'transparent'
+    },
+    resultsSection: {
         flex: 1,
-        width: '100%',
-        paddingHorizontal: 20,
-    },
-    loadingIndicator: {
-        marginTop: 20,
-    },
-    errorText: {
-        fontSize: 16,
-        color: 'red',
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    circleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    circleValueContainer: {
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10,
+        padding: 20
     },
-    percentageBarContainer: {
-        width: '100%',
-        marginBottom: 20,
+    errorContainer: {
+        alignItems: 'center',
+        padding: 20
     },
-    addFoodContainer: {
+    nutritionCard: {
+        backgroundColor: '#22224a',
+        borderRadius: 20,
+        padding: 20,
         width: '100%',
+        maxWidth: 400
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#709afc', // Light Blue
+        textAlign: 'center',
+      },
+    subtitle: {
+        fontSize: 18,
+        color: '#b048fa', // Purple
+        textAlign: 'center',
     },
 });
 

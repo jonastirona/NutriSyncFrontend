@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, Button, SafeAreaView } from 'react-native';
-import { Camera, CameraType, BarcodeScanningResult, useCameraPermissions, CameraView } from 'expo-camera';
-import styles from '../styles/styles';
+import { Camera, useCameraPermissions, CameraView } from 'expo-camera';
+import { useUser } from '../context/userContext';
+import { fetchFoodDataByBarcode } from '../services/api';
 import scannerStyles from '../styles/scannerStyles';
-import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
 import PercentageBar from '../components/percentageBar';
+import { BottomNavigation } from '../components/bottomNavigation';
 import AddFood from '../components/addFood';
-import { fetchFoodDataByBarcode } from '../services/api';
-import { useUser } from '../context/userContext';
+import styles from '../styles/styles';
 
 interface FoodData {
     calories: number;
@@ -27,70 +27,77 @@ const Scanner = () => {
     const [cameraActive, setCameraActive] = useState(true);
 
     useEffect(() => {
-        if (barcode) {
+        if (!barcode) return;
+
+        const fetchData = async () => {
             setLoading(true);
-            const fetchFoodData = async () => {
-                try {
-                    const data = await fetchFoodDataByBarcode(barcode);
-                    if (data.status === 1) {
-                        const nutrients = data.product.nutriments;
-                        const calories = nutrients['energy-kcal_value'] || 0;
-                        const protein = nutrients['proteins_value'] || 0;
-                        const fat = nutrients['fat_value'] || 0;
-                        const carbs = nutrients['carbohydrates_value'] || 0;
-                        setFoodData({ calories, protein, fat, carbs });
-                        setCameraActive(false);
-                    } else {
-                        setFoodData({
-                            calories: 0,
-                            protein: 0,
-                            fat: 0,
-                            carbs: 0,
-                            error: 'Could not find nutritional information for this product.'
-                        });
-                    }
-                } catch (error) {
+            try {
+                const data = await fetchFoodDataByBarcode(barcode);
+                if (data.status === 1) {
+                    const nutrients = data.product.nutriments;
                     setFoodData({
-                        calories: 0,
-                        protein: 0,
-                        fat: 0,
-                        carbs: 0,
-                        error: 'Failed to fetch food data. Please check your network connection.'
+                        calories: nutrients['energy-kcal_value'] || 0,
+                        protein: nutrients['proteins_value'] || 0,
+                        fat: nutrients['fat_value'] || 0,
+                        carbs: nutrients['carbohydrates_value'] || 0
                     });
-                } finally {
-                    setLoading(false);
+                    setCameraActive(false);
+                } else {
+                    setFoodData({
+                        calories: 0, protein: 0, fat: 0, carbs: 0,
+                        error: 'No nutritional information found for this product.'
+                    });
                 }
-            };
-    
-            fetchFoodData();
-        }
+            } catch (error) {
+                setFoodData({
+                    calories: 0, protein: 0, fat: 0, carbs: 0,
+                    error: 'Connection error. Please try again.'
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [barcode]);
 
-    if (!permission) {
-        return <View />;
-    }
+    if (!permission) return <View />;
 
     if (!permission.granted) {
         return (
-            <SafeAreaView style={styles.container}>
-                <Text style={styles.subtitle}>We need your permission to show the camera</Text>
-                <Button onPress={requestPermission} title="Grant Permission" />
+            <SafeAreaView style={[styles.container, { padding: 0 }]}>
+                <View style={scannerStyles.permissionContainer}>
+                    <Text style={scannerStyles.subtitle}>Camera permission is required</Text>
+                    <Button onPress={requestPermission} title="Grant Permission" />
+                </View>
             </SafeAreaView>
         );
     }
 
-    const handleBarcodeScanned = ({ type, data }: BarcodeScanningResult) => {
+    const handleBarcodeScanned = ({ data }: { type: string; data: string }) => {
         setBarcode(data);
     };
 
+    const resetScanner = () => {
+        setBarcode(null);
+        setFoodData(null);
+        setCameraActive(true);
+    };
+
+    const handleAddFoodResult = (success: boolean) => {
+        if (success) {
+            resetScanner();
+        }
+    };
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={scannerStyles.mainContent}>
-                <Text style={scannerStyles.headerTitle}>Barcode Scanner</Text>
-                
-                {cameraActive && (
-                    <>
-                        <View style={scannerStyles.cameraContainer}>
+        <SafeAreaView style={[styles.container, { padding: 0 }]}>
+            <Text style={scannerStyles.title}>Nutrition Scanner</Text>
+            
+            <View style={scannerStyles.content}>
+                {cameraActive ? (
+                    <View style={scannerStyles.scannerSection}>
+                        <View style={scannerStyles.cameraWrapper}>
                             <CameraView
                                 style={scannerStyles.camera}
                                 onBarcodeScanned={handleBarcodeScanned}
@@ -98,66 +105,65 @@ const Scanner = () => {
                                     barcodeTypes: ['ean13']
                                 }}
                             />
+                            <View style={scannerStyles.overlay}>
+                                <View style={scannerStyles.scanArea} />
+                            </View>
                         </View>
-                        <Text style={scannerStyles.instructionText}>
-                            Align a barcode within the frame to get food info.
+                        <Text style={scannerStyles.subtitle}>
+                            Place barcode within the frame
                         </Text>
-                    </>
-                )}
+                    </View>
+                ) : (
+                    <View style={scannerStyles.resultsSection}>
+                        {loading ? (
+                            <ActivityIndicator color="#709afc" size="large" />
+                        ) : foodData?.error ? (
+                            <View style={scannerStyles.errorContainer}>
+                                <Text style={[scannerStyles.subtitle, { color: '#ff6b6b' }]}>{foodData.error}</Text>
+                                <Button onPress={resetScanner} title="Scan Again" />
+                            </View>
+                        ) : (
+                            <View style={scannerStyles.nutritionCard}>
+                                <Text style={scannerStyles.title}>Nutrition Facts</Text>
+                                
+                                <View style={styles.circleContainer}>
+                                    <PercentageCircle
+                                        label="Protein"
+                                        value={foodData?.protein || 0}
+                                    />
+                                    <PercentageCircle
+                                        label="Carbs"
+                                        value={foodData?.carbs || 0}
+                                    />
+                                    <PercentageCircle
+                                        label="Fat"
+                                        value={foodData?.fat || 0}
+                                    />
+                                </View>
 
-                {!cameraActive && (
-                    <View style={scannerStyles.resultsContainer}>
-                        {loading && <ActivityIndicator color="#fff" style={scannerStyles.loadingIndicator} />}
-                        {foodData?.error && <Text style={scannerStyles.errorText}>{foodData.error}</Text>}
-                        {foodData && !foodData.error && (
-                            <>
-                                <View style={scannerStyles.circleContainer}>
-                                    <View style={scannerStyles.circleValueContainer}>
-                                        <PercentageCircle
-                                            label="Fat"
-                                            value={foodData.fat}
-                                        />
-                                    </View>
-                                    <View style={scannerStyles.circleValueContainer}>
-                                        <PercentageCircle
-                                            label="Protein"
-                                            value={foodData.protein}
-                                        />
-                                    </View>
-                                    <View style={scannerStyles.circleValueContainer}>
-                                        <PercentageCircle
-                                            label="Carbs"
-                                            value={foodData.carbs}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={scannerStyles.percentageBarContainer}>
-                                    <PercentageBar
-                                        label="Calories"
-                                        value={foodData.calories}
-                                    />
-                                </View>
-                                <View style={scannerStyles.addFoodContainer}>
-                                    <AddFood
-                                        username={username}
-                                        fooditem={barcode || ''}
-                                        calories={foodData.calories}
-                                        protein={foodData.protein}
-                                        carbs={foodData.carbs}
-                                        fat={foodData.fat}
-                                        onPress={(success: boolean) => {
-                                            console.log('AddFood onPress called with success:', success);
-                                        }}
-                                    />
-                                </View>
-                            </>
+                                <PercentageBar
+                                    label="Calories"
+                                    value={foodData?.calories || 0}
+                                />
+
+                                <AddFood
+                                    username={username}
+                                    fooditem={barcode || ''}
+                                    calories={foodData?.calories || 0}
+                                    protein={foodData?.protein || 0}
+                                    carbs={foodData?.carbs || 0}
+                                    fat={foodData?.fat || 0}
+                                    onPress={handleAddFoodResult}
+                                />
+
+                                <Button onPress={resetScanner} title="Scan Another" />
+                            </View>
                         )}
                     </View>
                 )}
             </View>
-            <BottomNavigation />
         </SafeAreaView>
     );
-};
+}
 
 export default Scanner;
