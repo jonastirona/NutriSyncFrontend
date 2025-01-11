@@ -33,21 +33,21 @@ Frontend React Native app is a work in progress. The backend of the project is c
 ### Client-Side (Frontend) 📱
 The frontend is built using React Native and Expo, providing a seamless and responsive user interface. Here are the key pages:
 
-- **Index Page**: The landing page of the app, providing an overview and navigation to other sections.
-  ![Index Page](assets/screenshots/index_page.PNG)
-- **Login Page**: Allows users to log in to their accounts.
-  ![Login Page](assets/screenshots/login_page.PNG)
-- **Signup Page**: Enables new users to create an account.
-  ![Signup Page](assets/screenshots/signup_page.PNG)
-- **Home Page**: Displays an overview of the user's daily log and goals.
-  ![Home Page](assets/screenshots/home_page.PNG)
-- **Search Page**: Users can search for food items to log. This screen includes a search bar, search results, and detailed nutrient information for each food item.
-  ![Search Page](assets/screenshots/search_page.PNG)
-- **Scanner Page**: Allows users to scan barcodes to quickly log food items.
-  ![Scanner Camera](assets/screenshots/scanner_camera_page.PNG)
-  ![Scanner Info](assets/screenshots/scanner_info_page.PNG)
-- **Settings Page**: Provides options for users to customize their app experience.
-  ![Settings Page](assets/screenshots/settings_page.PNG)
+- **Index Page**: The landing page of the app, providing an overview and navigation to other sections.<br>
+  <img src="assets/screenshots/index_page.PNG" alt="Index Page" width="300"/>
+- **Login Page**: Allows users to log in to their accounts.<br>
+  <img src="assets/screenshots/login_page.PNG" alt="Login Page" width="300"/>
+- **Signup Page**: Enables new users to create an account.<br>
+  <img src="assets/screenshots/signup_page.PNG" alt="Signup Page" width="300"/>
+- **Home Page**: Displays an overview of the user's daily log and goals.<br>
+  <img src="assets/screenshots/home_page.PNG" alt="Home Page" width="300"/>
+- **Search Page**: Users can search for food items to log. This screen includes a search bar, search results, and detailed nutrient information for each food item.<br>
+  <img src="assets/screenshots/search_page.PNG" alt="Search Page" width="300"/>
+- **Scanner Page**: Allows users to scan barcodes to quickly log food items.<br>
+  <img src="assets/screenshots/scanner_camera_page.PNG" alt="Scanner Camera" width="300"/><br>
+  <img src="assets/screenshots/scanner_info_page.PNG" alt="Scanner Info" width="300"/>
+- **Settings Page**: Provides options for users to customize their app experience.<br>
+  <img src="assets/screenshots/settings_page.PNG" alt="Settings Page" width="300"/>
 
 ### Server-Side (Backend) 🖥
 The backend is implemented using Node.js and Express.js, hosted on AWS Elastic Beanstalk. It handles user authentication, food data retrieval, and logging functionalities. Key endpoints include:
