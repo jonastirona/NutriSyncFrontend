@@ -11,6 +11,7 @@ import AddFood from '../components/addFood';
 import styles from '../styles/styles';
 import searchStyles from '../styles/searchStyles';
 
+// interface for food data
 interface FoodData {
     calories: number;
     protein: number;
@@ -21,6 +22,7 @@ interface FoodData {
 }
 
 const Scanner = () => {
+    // state variables
     const [barcode, setBarcode] = useState<string | null>(null);
     const [foodData, setFoodData] = useState<FoodData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -30,6 +32,7 @@ const Scanner = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
 
+    // fetch food data when barcode changes
     useEffect(() => {
         if (!barcode) return;
 
@@ -66,6 +69,7 @@ const Scanner = () => {
         fetchData();
     }, [barcode]);
 
+    // request camera permission if not granted
     if (!permission) return <View />;
 
     if (!permission.granted) {
@@ -79,16 +83,19 @@ const Scanner = () => {
         );
     }
 
+    // handle barcode scanned event
     const handleBarcodeScanned = ({ data }: { type: string; data: string }) => {
         setBarcode(data);
     };
 
+    // reset scanner state
     const resetScanner = () => {
         setBarcode(null);
         setFoodData(null);
         setCameraActive(true);
     };
 
+    // handle add food result
     const handleAddFoodResult = (success: boolean) => {
         setMessage(success ? 'Food added to log' : 'Failed to add food to log');
         setModalVisible(true);
@@ -172,6 +179,7 @@ const Scanner = () => {
             </View>
             <BottomNavigation />
 
+            {/* modal for confirmation message */}
             <Modal
                 animationType="slide"
                 transparent={true}
