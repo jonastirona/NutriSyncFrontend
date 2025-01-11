@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Button, SafeAreaView } from 'react-native';
+import { View, Text, ActivityIndicator, Button, SafeAreaView, Modal, TouchableOpacity } from 'react-native';
 import { Camera, useCameraPermissions, CameraView } from 'expo-camera';
 import { useUser } from '../context/userContext';
 import { fetchFoodDataByBarcode } from '../services/api';
@@ -9,6 +9,7 @@ import PercentageBar from '../components/percentageBar';
 import { BottomNavigation } from '../components/bottomNavigation';
 import AddFood from '../components/addFood';
 import styles from '../styles/styles';
+import searchStyles from '../styles/searchStyles';
 
 interface FoodData {
     calories: number;
@@ -26,6 +27,8 @@ const Scanner = () => {
     const { username } = useUser();
     const [permission, requestPermission] = useCameraPermissions();
     const [cameraActive, setCameraActive] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (!barcode) return;
@@ -87,6 +90,8 @@ const Scanner = () => {
     };
 
     const handleAddFoodResult = (success: boolean) => {
+        setMessage(success ? 'Food added to log' : 'Failed to add food to log');
+        setModalVisible(true);
         if (success) {
             resetScanner();
         }
@@ -166,6 +171,25 @@ const Scanner = () => {
                 )}
             </View>
             <BottomNavigation />
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={searchStyles.centeredView}>
+                    <View style={searchStyles.modalView}>
+                        <Text style={searchStyles.modalText}>{message}</Text>
+                        <TouchableOpacity
+                            style={searchStyles.modalButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={searchStyles.modalButtonText}>Dismiss</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }
