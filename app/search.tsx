@@ -7,6 +7,8 @@ import {
     FlatList,
     ActivityIndicator,
     Modal,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from 'react-native';
 import { BottomNavigation } from '../components/bottomNavigation';
 import PercentageCircle from '../components/percentageCircle';
@@ -17,17 +19,20 @@ import searchStyles from '../styles/searchStyles';
 import { searchFood, loadMoreResults } from '../services/api';
 import { useUser } from '../context/userContext';
 
+// interface for food nutrient
 interface FoodNutrient {
     nutrientName: string;
     value: number;
 }
 
+// interface for food item
 interface FoodItem {
     fdcId: number;
     description: string;
     foodNutrients: FoodNutrient[];
 }
 
+// Search component
 const Search = () => {
     const [keyword, setKeyword] = useState('');
     const [searchResults, setSearchResults] = useState<FoodItem[]>([]);
@@ -52,6 +57,7 @@ const Search = () => {
         setTotalHits(0);
     };
 
+    // function to fetch initial food list
     const fetchInitialFoodList = async () => {
         setLoading(true);
         setError('');
@@ -75,6 +81,7 @@ const Search = () => {
         }
     };
 
+    //  function to search food
     const handleSearchFood = async () => {
         setLoading(true);
         setError('');
@@ -97,6 +104,7 @@ const Search = () => {
         }
     };
 
+    // function to load more results
     const handleLoadMoreResults = async () => {
         if (loadingMore || !hasMore || loading) return;
 
@@ -192,62 +200,64 @@ const Search = () => {
     // render component
     
     return (
-        <View style={styles.container}>
-            <View style={searchStyles.searchContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Search for food"
-                    placeholderTextColor="#A390E4"
-                    value={keyword}
-                    onChangeText={setKeyword}
-                />
-                <TouchableOpacity style={searchStyles.button} onPress={handleSearchFood}>
-                    <Text style={searchStyles.buttonText}>Search</Text>
-                </TouchableOpacity>
-            </View>
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <View style={searchStyles.centeredView}>
-                    <View style={searchStyles.modalView}>
-                        <Text style={searchStyles.modalText}>{message}</Text>
-                        <TouchableOpacity
-                            style={searchStyles.modalButton}
-                            onPress={() => setModalVisible(false)}
-                        >
-                            <Text style={searchStyles.modalButtonText}>Dismiss</Text>
-                        </TouchableOpacity>
-                    </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <View style={searchStyles.searchContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Search for food"
+                        placeholderTextColor="#A390E4"
+                        value={keyword}
+                        onChangeText={setKeyword}
+                    />
+                    <TouchableOpacity style={searchStyles.button} onPress={handleSearchFood}>
+                        <Text style={searchStyles.buttonText}>Search</Text>
+                    </TouchableOpacity>
                 </View>
-            </Modal>
 
-            {error ? <Text style={styles.subtitle}>{error}</Text> : null}
-            {loading && <ActivityIndicator size="large" color={styles.title.color} />}
-            
-            <View style={{ marginBottom: 250 }}> 
-                <FlatList
-                    data={searchResults}
-                    keyExtractor={(item) => item.fdcId.toString()}
-                    renderItem={renderItem}
-                    onEndReached={handleLoadMoreResults}
-                    onEndReachedThreshold={0.5}
-                    ListFooterComponent={
-                        loadingMore ? (
-                            <ActivityIndicator size="small" color={styles.title.color} />
-                        ) : hasMore ? (
-                            <Text style={styles.subtitle}>Scroll for more...</Text>
-                        ) : searchResults.length > 0 ? (
-                            <Text style={styles.subtitle}>No more results</Text>
-                        ) : null
-                    }
-                />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={searchStyles.centeredView}>
+                        <View style={searchStyles.modalView}>
+                            <Text style={searchStyles.modalText}>{message}</Text>
+                            <TouchableOpacity
+                                style={searchStyles.modalButton}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Text style={searchStyles.modalButtonText}>Dismiss</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+                {error ? <Text style={styles.subtitle}>{error}</Text> : null}
+                {loading && <ActivityIndicator size="large" color={styles.title.color} />}
+                
+                <View style={{ marginBottom: 250 }}> 
+                    <FlatList
+                        data={searchResults}
+                        keyExtractor={(item) => item.fdcId.toString()}
+                        renderItem={renderItem}
+                        onEndReached={handleLoadMoreResults}
+                        onEndReachedThreshold={0.5}
+                        ListFooterComponent={
+                            loadingMore ? (
+                                <ActivityIndicator size="small" color={styles.title.color} />
+                            ) : hasMore ? (
+                                <Text style={styles.subtitle}>Scroll for more...</Text>
+                            ) : searchResults.length > 0 ? (
+                                <Text style={styles.subtitle}>No more results</Text>
+                            ) : null
+                        }
+                    />
+                </View>
+                <BottomNavigation />
             </View>
-            <BottomNavigation />
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
