@@ -17,57 +17,55 @@ import searchStyles from '../styles/searchStyles';
 import { searchFood, loadMoreResults } from '../services/api';
 import { useUser } from '../context/userContext';
 
-// interface for food nutrient
 interface FoodNutrient {
     nutrientName: string;
     value: number;
 }
 
-// interface for food item
 interface FoodItem {
     fdcId: number;
     description: string;
     foodNutrients: FoodNutrient[];
 }
 
-// search screen component
 const Search = () => {
-    // state variables
     const [keyword, setKeyword] = useState('');
     const [searchResults, setSearchResults] = useState<FoodItem[]>([]);
     const [expandedItem, setExpandedItem] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState('');
     const [searchPage, setSearchPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [message, setMessage] = useState<string | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const pageSize = 10;
+    const [totalHits, setTotalHits] = useState(0);
+    const pageSize = 30;
 
     const { username } = useUser();
 
-    // function to reset states
     const resetStates = () => {
         setSearchResults([]);
         setExpandedItem(null);
         setSearchPage(1);
         setHasMore(true);
+        setTotalHits(0);
     };
 
-    // function to fetch initial food list
     const fetchInitialFoodList = async () => {
         setLoading(true);
         setError('');
         resetStates();
         try {
             const data = await searchFood('', 1, pageSize);
-            if (data.foods.length === 0) {
+            const filteredFoods = data.foods.filter((food: { dataType: string; }) => food.dataType !== 'Experimental');
+            if (filteredFoods.length === 0) {
                 setError('No food items found.');
             } else {
-                setSearchResults(data.foods);
-                if (data.foods.length < pageSize) {
-                    setHasMore(false);
-                }
+                setSearchResults(filteredFoods);
+                setTotalHits(data.totalHits);
+                // Check if there are more pages based on total hits
+                setHasMore(filteredFoods.length < data.totalHits);
             }
         } catch (error: any) {
             setError(`Error fetching data: ${error.message}`);
@@ -77,20 +75,19 @@ const Search = () => {
         }
     };
 
-    // function to handle search food
     const handleSearchFood = async () => {
         setLoading(true);
         setError('');
         resetStates();
         try {
             const data = await searchFood(keyword, 1, pageSize);
-            if (data.foods.length === 0) {
+            const filteredFoods = data.foods.filter((food: { dataType: string; }) => food.dataType !== 'Experimental');
+            if (filteredFoods.length === 0) {
                 setError('No food items found. Please try another search');
             } else {
-                setSearchResults(data.foods);
-                if (data.foods.length < pageSize) {
-                    setHasMore(false);
-                }
+                setSearchResults(filteredFoods);
+                setTotalHits(data.totalHits);
+                setHasMore(filteredFoods.length < data.totalHits);
             }
         } catch (error: any) {
             setError(`Error fetching data: ${error.message}`);
@@ -100,19 +97,26 @@ const Search = () => {
         }
     };
 
-    // function to handle load more results
     const handleLoadMoreResults = async () => {
-        if (loading || !hasMore) return;
-        setLoading(true);
+        if (loadingMore || !hasMore || loading) return;
+
+        const nextPage = searchPage + 1;
+        
+        // Check if we've already loaded all results
+        if (searchResults.length >= totalHits) {
+            setHasMore(false);
+            return;
+        }
+
+        setLoadingMore(true);
         try {
-            const nextPage = searchPage + 1;
             const data = await loadMoreResults(keyword, nextPage, pageSize);
-            if (data.foods.length > 0) {
-                setSearchResults([...searchResults, ...data.foods]);
+            const filteredFoods = data.foods.filter((food: { dataType: string; }) => food.dataType !== 'Experimental');
+            
+            if (filteredFoods.length > 0) {
+                setSearchResults(prevResults => [...prevResults, ...filteredFoods]);
                 setSearchPage(nextPage);
-                if (data.foods.length < pageSize) {
-                    setHasMore(false);
-                }
+                setHasMore(searchResults.length + filteredFoods.length < data.totalHits);
             } else {
                 setHasMore(false);
             }
@@ -120,7 +124,7 @@ const Search = () => {
             console.error('Error fetching more data', error);
             setError(`Error fetching more data: ${error.message}`);
         } finally {
-            setLoading(false);
+            setLoadingMore(false);
         }
     };
 
@@ -186,12 +190,12 @@ const Search = () => {
     }, []);
 
     // render component
+    
     return (
         <View style={styles.container}>
-            {/* Search input */}
             <View style={searchStyles.searchContainer}>
                 <TextInput
-                    style={styles.input} // Use input styles from styles.ts
+                    style={styles.input}
                     placeholder="Search for food"
                     placeholderTextColor="#A390E4"
                     value={keyword}
@@ -201,7 +205,7 @@ const Search = () => {
                     <Text style={searchStyles.buttonText}>Search</Text>
                 </TouchableOpacity>
             </View>
-            {/* display modal message */}
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -220,17 +224,28 @@ const Search = () => {
                     </View>
                 </View>
             </Modal>
-            {/* search results */}
+
             {error ? <Text style={styles.subtitle}>{error}</Text> : null}
             {loading && <ActivityIndicator size="large" color={styles.title.color} />}
-            <FlatList
-                data={searchResults}
-                keyExtractor={(item) => item.fdcId.toString()}
-                renderItem={renderItem}
-                onEndReached={handleLoadMoreResults}
-                onEndReachedThreshold={0.1}
-                ListFooterComponent={loading ? <ActivityIndicator size="small" color={styles.title.color} /> : null}
-            />
+            
+            <View style={{ marginBottom: 250 }}> 
+                <FlatList
+                    data={searchResults}
+                    keyExtractor={(item) => item.fdcId.toString()}
+                    renderItem={renderItem}
+                    onEndReached={handleLoadMoreResults}
+                    onEndReachedThreshold={0.5}
+                    ListFooterComponent={
+                        loadingMore ? (
+                            <ActivityIndicator size="small" color={styles.title.color} />
+                        ) : hasMore ? (
+                            <Text style={styles.subtitle}>Scroll for more...</Text>
+                        ) : searchResults.length > 0 ? (
+                            <Text style={styles.subtitle}>No more results</Text>
+                        ) : null
+                    }
+                />
+            </View>
             <BottomNavigation />
         </View>
     );

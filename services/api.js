@@ -101,7 +101,11 @@ export const searchFood = async (keyword, pageNum, pageSize) => {
       }
     });
     console.log('Search food response:', response.data);
-    return response.data;
+
+    // Filter out results with datatype = "experimental"
+    const filteredData = response.data.foods.filter(food => food.dataType !== 'Experimental');
+
+    return { ...response.data, foods: filteredData }; // Return totalResults as well
   } catch (error) {
     console.error('Search food error:', error);
     throw new Error(error.response?.data || 'Search food failed');
@@ -119,7 +123,9 @@ export const loadMoreResults = async (keyword, pageNum, pageSize) => {
       }
     });
     console.log('Load more results response:', response.data);
-    return response.data;
+    // Filter out results with datatype = "experimental"
+    const filteredData = response.data.foods.filter(food => food.dataType !== 'Experimental');
+    return { ...response.data, foods: filteredData };
   } catch (error) {
     console.error('Load more results error:', error);
     throw new Error(error.response?.data || 'Load more results failed');
