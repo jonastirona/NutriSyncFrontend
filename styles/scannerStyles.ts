@@ -18,7 +18,8 @@ const scannerStyles = StyleSheet.create({
     scannerSection: {
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1
+        flex: 1,
+        marginTop: -30
     },
     cameraWrapper: {
         width: CAMERA_SIZE,
@@ -59,7 +60,8 @@ const scannerStyles = StyleSheet.create({
         borderRadius: 20,
         padding: 20,
         width: '100%',
-        maxWidth: 400
+        maxWidth: 400,
+        marginTop: -40
     },
     title: {
         fontSize: 32,

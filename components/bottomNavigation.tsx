@@ -23,7 +23,7 @@ export const BottomNavigation = () => {
 
   // return bottom navigation bar
   return (
-    <View style={styles.container}>
+    <View style={styles.navContainer}>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => Navigate('home')} style={styles.navButton}>
           <Image source={HomeIcon} style={styles.navButtonIcon} />

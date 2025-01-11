@@ -6,6 +6,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#18183C', // Deep Blue
     padding: 20,
   },
+  backgroundContainer: {
+    flex: 1,
+    backgroundColor: '#18183C',
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  navContainer: {
+    flex: 0,
+    position: 'absolute',
+    bottom: 15,
+    left: 0,
+    right: 0,
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',

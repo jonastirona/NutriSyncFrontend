@@ -65,7 +65,7 @@ const Scanner = () => {
 
     if (!permission.granted) {
         return (
-            <SafeAreaView style={[styles.container, { padding: 0 }]}>
+            <SafeAreaView style={styles.backgroundContainer}>
                 <View style={scannerStyles.permissionContainer}>
                     <Text style={scannerStyles.subtitle}>Camera permission is required</Text>
                     <Button onPress={requestPermission} title="Grant Permission" />
@@ -91,10 +91,10 @@ const Scanner = () => {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { padding: 0 }]}>
+        <SafeAreaView style={styles.backgroundContainer}>
             <Text style={scannerStyles.title}>Nutrition Scanner</Text>
             
-            <View style={scannerStyles.content}>
+            <View style={styles.contentContainer}>
                 {cameraActive ? (
                     <View style={scannerStyles.scannerSection}>
                         <View style={scannerStyles.cameraWrapper}>
@@ -162,6 +162,7 @@ const Scanner = () => {
                     </View>
                 )}
             </View>
+            <BottomNavigation />
         </SafeAreaView>
     );
 }
