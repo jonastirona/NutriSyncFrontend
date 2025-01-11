@@ -38,13 +38,13 @@ export default function PercentageBar({ label, value = 0 }: PercentageBarProps) 
     }
 
     // Ensure both value and calorieGoal are numbers and not zero before calculating percentage
-    const percentage = (value && calorieGoal) ? Math.min((value / calorieGoal) * 100, 100) : 0;
+    const percentage = (value && calorieGoal) ? (value / calorieGoal) * 100 : 0;
 
     return (
         <View style={percentageBarStyles.container}>
             <Text style={percentageBarStyles.label}>{label}</Text>
             <View style={percentageBarStyles.barContainer}>
-                <View style={[percentageBarStyles.bar, { width: `${percentage}%` }]} />
+                <View style={[percentageBarStyles.bar, { width: `${Math.min(percentage, 100)}%` }]} />
             </View>
             <View style={percentageBarStyles.bottomContainer}>
                 <Text style={percentageBarStyles.percentage}>

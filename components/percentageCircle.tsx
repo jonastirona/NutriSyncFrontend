@@ -50,14 +50,14 @@ const PercentageCircle = ({ label, value }: PercentageCircleProps) => {
         }
 
         // Calculate actual percentage based on value vs goal
-        const newPercentage = calculatedMacroGoal > 0 ? Math.min((value / calculatedMacroGoal) * 100, 100) : 0;
+        const newPercentage = calculatedMacroGoal > 0 ? (value / calculatedMacroGoal) * 100 : 0;
         setPercentage(newPercentage);
         setMacroGoal(calculatedMacroGoal);
     }, [userGoal, value, label]);
 
     const radius = 30;
     const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+    const strokeDashoffset = circumference - (Math.min(percentage, 100) / 100) * circumference;
 
     return (
         <View style={percentageCircleStyles.container}>
