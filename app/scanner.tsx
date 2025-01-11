@@ -15,6 +15,7 @@ interface FoodData {
     protein: number;
     fat: number;
     carbs: number;
+    product_name?: string;
     error?: string;
 }
 
@@ -39,7 +40,8 @@ const Scanner = () => {
                         calories: nutrients['energy-kcal_value'] || 0,
                         protein: nutrients['proteins_value'] || 0,
                         fat: nutrients['fat_value'] || 0,
-                        carbs: nutrients['carbohydrates_value'] || 0
+                        carbs: nutrients['carbohydrates_value'] || 0,
+                        product_name: data.product.product_name || 'Unknown Item'
                     });
                     setCameraActive(false);
                 } else {
@@ -125,6 +127,7 @@ const Scanner = () => {
                         ) : (
                             <View style={scannerStyles.nutritionCard}>
                                 <Text style={scannerStyles.title}>Nutrition Facts</Text>
+                                <Text style={scannerStyles.subtitle}>{foodData?.product_name}</Text>
                                 
                                 <View style={styles.circleContainer}>
                                     <PercentageCircle
@@ -148,7 +151,7 @@ const Scanner = () => {
 
                                 <AddFood
                                     username={username}
-                                    fooditem={barcode || ''}
+                                    fooditem={foodData?.product_name || 'Unknown Item'}
                                     calories={foodData?.calories || 0}
                                     protein={foodData?.protein || 0}
                                     carbs={foodData?.carbs || 0}
