@@ -26,7 +26,20 @@ This repository is dedicated to the frontend of the product, responsible for the
 - AWS Relational Database Service
 
 ## Project Status 🏁
-Frontend React Native app is a work in progress. The backend of the project is complete and unit tested in isolation.
+
+The frontend React Native app is complete, and the backend is fully developed with two minor bugs currently being addressed. 
+
+Planned future enhancements include:
+
+- **Caloric Intake Calculator**: Enable users to input their weight and goals to calculate recommended caloric intake and macros.
+- **Recommended Foods Page**: Display suggested foods tailored to the remaining macros in the user's food log.
+- **Custom Food Entry**: Allow users to add their own food items to the database.
+- **Progress Visualization**: Introduce graphs or charts to track and display user progress over time.
+- **Weight Tracking**: Provide functionality for users to log and monitor their weight.
+- **Food Log Management**: Add options to update or delete entries from the food log.
+- **NutriScanOCR API Integration**: Incorporate **NutriScanOCR**, a machine learning API that I am currently developing, to extract and log nutritional information directly from food labels.
+
+
 
 ## Project Structure 🏗
 
